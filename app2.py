@@ -7,7 +7,15 @@ from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
 
-st.title("Yeni YTB Teşvik Robotu")
+
+
+# Başlığı tam ortalamak için üç sütun
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.title("Yeni YTB Teşvik Robotu")
+
+# … geri kalan kodunuz …
+
 
 # 0) NACE Kodu Girişi
 nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin")
@@ -86,7 +94,7 @@ if st.button("Sorgula"):
         ozel_sart = "Hedef Yatırım Değildir"
 
     # 5.5) Seçim Özeti
-    st.subheader("Seçimleriniz")
+    st.subheader("Sonuçlar")
     st.write(f"**NACE Kodu:** {nace_kodu}")
     st.write(f"**Yatırımın Adı:** {yatirim_adi}")
     st.write(f"**İl:** {secili_il}")
