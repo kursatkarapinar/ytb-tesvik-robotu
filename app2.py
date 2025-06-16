@@ -40,8 +40,7 @@ with col2:
     st.write("**Kürşat Karapınar - Apsis Danışmanlık**  \n")
 
 # 5) Sorgula
-if st.button("Sorgula"):
-   # 5) Sorgula
+
 if st.button("Sorgula"):
     # 5.0) Geçerlilik kontrolü
     if nace_kodu not in df_nace["NACE REV. 2.1 KODU"].values:
