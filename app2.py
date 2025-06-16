@@ -32,7 +32,7 @@ secim_oncelikli = st.selectbox(
     oncelikli_yatirim_secim_listesi
 )
 
-col1, col2 = st.columns([2, 1])
+col1, col2 = st.columns([3, 2])
 
 with col2:
     # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
