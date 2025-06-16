@@ -10,7 +10,7 @@ from NACE import df_nace
 
 
 # Başlığı tam ortalamak için üç sütun
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
     st.title("Yeni YTB Teşvik Robotu")
 
