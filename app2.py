@@ -32,6 +32,28 @@ secim_oncelikli = st.selectbox(
     oncelikli_yatirim_secim_listesi
 )
 
+# … mevcut kodunuz …
+
+# (En alt satıra ekleyin)
+st.markdown(
+    """
+    <div style="
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background-color: rgba(255,255,255,0.6);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #333;
+        z-index: 1000;
+    ">
+        Kürşat Karapınar
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # 5) Sorgula
 if st.button("Sorgula"):
     # 5.1) Yatırımın Adı
@@ -136,27 +158,6 @@ if st.button("Sorgula"):
 
     # 5.13) Ekosistem Geliştirme Planı
     st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
-# … mevcut kodunuz …
-
-# (En alt satıra ekleyin)
-    st.markdown(
-    """
-    <div style="
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background-color: rgba(255,255,255,0.6);
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        color: #333;
-        z-index: 1000;
-    ">
-        Kürşat Karapınar
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 import streamlit as st
 
 
