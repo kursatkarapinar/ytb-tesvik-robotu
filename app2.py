@@ -136,8 +136,6 @@ if st.button("Sorgula"):
 
     # 5.13) Ekosistem Geliştirme Planı
     st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
-import streamlit as st
-
 # … mevcut kodunuz …
 
 # (En alt satıra ekleyin)
@@ -159,4 +157,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+import streamlit as st
+
+
 
