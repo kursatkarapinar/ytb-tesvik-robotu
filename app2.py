@@ -37,18 +37,23 @@ col1, col2 = st.columns([3, 1])
 with col2:
     # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
     # st.write tek çağrıda “  \n” (iki boşluk + newline) ile satır sonu verir
-    st.write("**Kürşat Karapınar**  \n")
+    st.write("**Kürşat Karapınar**  \nApsis Danışmanlık \n")
 
 # 5) Sorgula
 if st.button("Sorgula"):
+   # 5) Sorgula
+if st.button("Sorgula"):
+    # 5.0) Geçerlilik kontrolü
+    if nace_kodu not in df_nace["NACE REV. 2.1 KODU"].values:
+        st.error("❌ Hatalı NACE Kodu girdiniz!")
+        st.stop()  # veya: return  # buradan sonraki kod çalışmaz
     # 5.1) Yatırımın Adı
-    if nace_kodu in df_nace["NACE REV. 2.1 KODU"].values:
-        yatirim_adi = df_nace.loc[
-            df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
-            "NACE REV.2.1 TANIM"
-        ].squeeze()
-    else:
-        yatirim_adi = ""
+    yatirim_adi = df_nace.loc[
+        df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
+        "NACE REV.2.1 TANIM"
+    ].squeeze()
+    # … geriye kalan tüm kodlar aynı şekilde devam eder …
+
 
     # 5.2) İlin Bulunduğu Bölge
     bolge_no = df_il_bolge.loc[
