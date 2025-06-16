@@ -10,7 +10,7 @@ from NACE import df_nace
 st.title("Yeni YTB Teşvik Robotu")
 
 # 0) NACE Kodu Girişi
-nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin:")
+nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin")
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
