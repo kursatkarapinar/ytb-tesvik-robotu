@@ -10,7 +10,7 @@ from NACE import df_nace
 st.title("Yeni YTB Teşvik Robotu")
 
 # 0) NACE Kodu Girişi
-nace_kodu = st.text_input("NACE Kodu Girin:")
+nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin:")
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
@@ -38,7 +38,7 @@ col1, col2 = st.columns([3, 1])
 with col2:
     # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
     # st.write tek çağrıda “  \n” (iki boşluk + newline) ile satır sonu verir
-    st.write("**Kürşat Karapınar**  \nApsis Danışmanlık")
+    st.write("**Kürşat Karapınar**  \n")
 
 # 5) Sorgula
 if st.button("Sorgula"):
