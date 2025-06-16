@@ -33,8 +33,7 @@ secim_oncelikli = st.selectbox(
 )
 
 col1, col2 = st.columns([3, 1])
-with col1:
-    sorgula_clicked = st.button("Sorgula")
+
 
 with col2:
     # İki satırı arka arkaya st.write ile bastırıyoruz
