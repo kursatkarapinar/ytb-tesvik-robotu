@@ -2,7 +2,7 @@ import pandas as pd
 from io import StringIO
 
 data = """İl,İlçe
-Adanam,Aladağ
+Adana,Aladağ
 Adana,Feke
 Adana,İmamoğlu
 Adana,Karaisalı
