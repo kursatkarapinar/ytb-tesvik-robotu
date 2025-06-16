@@ -36,9 +36,9 @@ col1, col2 = st.columns([3, 1])
 
 
 with col2:
-    # İki satırı arka arkaya st.write ile bastırıyoruz
-    st.write("**Kürşat Karapınar**")        # Kalın için markdown
-    st.write("Apsis Danışmanlık")
+    # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
+    # st.write tek çağrıda “  \n” (iki boşluk + newline) ile satır sonu verir
+    st.write("**Kürşat Karapınar**  \nApsis Danışmanlık")
 
 # 5) Sorgula
 if st.button("Sorgula"):
