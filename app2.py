@@ -32,27 +32,14 @@ secim_oncelikli = st.selectbox(
     oncelikli_yatirim_secim_listesi
 )
 
-# … mevcut kodunuz …
+col1, col2 = st.columns([3, 1])
+with col1:
+    sorgula_clicked = st.button("Sorgula")
 
-# (En alt satıra ekleyin)
-st.markdown(
-    """
-    <div style="
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background-color: rgba(255,255,255,0.6);
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        color: #333;
-        z-index: 1000;
-    ">
-        Kürşat Karapınar
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+with col2:
+    # İki satırı arka arkaya st.write ile bastırıyoruz
+    st.write("**Kürşat Karapınar**")        # Kalın için markdown
+    st.write("Apsis Danışmanlık")
 
 # 5) Sorgula
 if st.button("Sorgula"):
