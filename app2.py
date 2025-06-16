@@ -139,7 +139,7 @@ if st.button("Sorgula"):
 # … mevcut kodunuz …
 
 # (En alt satıra ekleyin)
-st.markdown(
+    st.markdown(
     """
     <div style="
         position: fixed;
