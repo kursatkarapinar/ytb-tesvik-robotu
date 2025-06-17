@@ -7,10 +7,18 @@ from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
 
-st.title("Yeni YTB Teşvik Robotu")
+
+
+# Başlığı tam ortalamak için üç sütun
+col1, col2, col3 = st.columns([1, 5, 1])
+with col2:
+    st.title("Yeni YTB Teşvik Robotu")
+
+# … geri kalan kodunuz …
+
 
 # 0) NACE Kodu Girişi
-nace_kodu = st.text_input("NACE Kodu Girin:")
+nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin")
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
@@ -32,16 +40,27 @@ secim_oncelikli = st.selectbox(
     oncelikli_yatirim_secim_listesi
 )
 
+col1, col2 = st.columns([3, 1])
+
+with col2:
+    # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
+    # st.write tek çağrıda “  \n” (iki boşluk + newline) ile satır sonu verir
+    st.write("**Kürşat Karapınar**  \n")
+
 # 5) Sorgula
+
 if st.button("Sorgula"):
+    # 5.0) Geçerlilik kontrolü
+    if nace_kodu not in df_nace["NACE REV. 2.1 KODU"].values:
+        st.error("❌ Hatalı NACE Kodu girdiniz!")
+        st.stop()  # veya: return  # buradan sonraki kod çalışmaz
     # 5.1) Yatırımın Adı
-    if nace_kodu in df_nace["NACE REV. 2.1 KODU"].values:
-        yatirim_adi = df_nace.loc[
-            df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
-            "NACE REV.2.1 TANIM"
-        ].squeeze()
-    else:
-        yatirim_adi = ""
+    yatirim_adi = df_nace.loc[
+        df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
+        "NACE REV.2.1 TANIM"
+    ].squeeze()
+    # … geriye kalan tüm kodlar aynı şekilde devam eder …
+
 
     # 5.2) İlin Bulunduğu Bölge
     bolge_no = df_il_bolge.loc[
@@ -75,7 +94,7 @@ if st.button("Sorgula"):
         ozel_sart = "Hedef Yatırım Değildir"
 
     # 5.5) Seçim Özeti
-    st.subheader("Seçimleriniz")
+    st.subheader("Sonuçlar")
     st.write(f"**NACE Kodu:** {nace_kodu}")
     st.write(f"**Yatırımın Adı:** {yatirim_adi}")
     st.write(f"**İl:** {secili_il}")
@@ -112,7 +131,7 @@ if st.button("Sorgula"):
         tax_display = "Yok"
     st.write(f"**Vergi İndirimi:** {tax_display}")
 
-        # 5.10) Faiz Desteği
+    # 5.10) Faiz Desteği
     if oncelikli_flag == "Evet":
         faiz_desteği = (
             "Var. Faiz oranı TCMB bir hafta vadeli REPO faiz oranının %25 ile 12,5 puandan küçük olanı geçemez. "
@@ -136,3 +155,7 @@ if st.button("Sorgula"):
 
     # 5.13) Ekosistem Geliştirme Planı
     st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
+import streamlit as st
+
+
+
