@@ -24,7 +24,7 @@ faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in df_nace.iterrows()
 ]
-_ = st.selectbox("Faaliyete Göre NACE Kodu Bul (Bulduktan sonra üst satırı girin)", faaliyet_options)
+_ = st.selectbox("Faaliyete Göre NACE Kodu Bul", faaliyet_options)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
@@ -62,7 +62,7 @@ with col2:
 if st.button("Sorgula"):
     # 5.0) Genel alan doldurma kontrolü
     if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "Seçiniz...":
-        st.error("❌ Lütfen Tüm Alanları(*) Eksiksiz Doldurun!")
+        st.error("❌ Lütfen Tüm Alanları (*) Eksiksiz Doldurun!")
         st.stop()
     # 5.1) Geçerlilik kontrolü
     # Geçerlilik kontrolü
