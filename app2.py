@@ -24,20 +24,23 @@ faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in df_nace.iterrows()
 ]
-_ = st.selectbox("Faaliyete Göre NACE Kodu Bul", faaliyet_options)
+_ = st.selectbox("Faaliyete Göre NACE Kodu Bul (Bulduktan sonra üst satırı girin)", faaliyet_options)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
-secili_il = st.selectbox("İl Seçin", iller)
+iller_options = [""] + iller
+secili_il = st.selectbox("İl Seçin", iller_options, index=0)
 
 # 2) İlçe Seçimi
 ilceler = sorted(df_il_ilce[df_il_ilce["İl"] == secili_il]["İlçe"].unique())
-secili_ilce = st.selectbox("İlçe Seçin", ilceler)
+ilceler_options = [""] + ilceler
+secili_ilce = st.selectbox("İlçe Seçin", ilceler_options, index=0)
 
 # 3) OSB veya Endüstri Bölgesi Sorgusu
 bolge_secim = st.radio(
     "OSB veya Endüstri Bölgesi mi?",
-    ("Evet", "Hayır")
+    ("Seçiniz...", "Evet", "Hayır"),
+    index=0
 )
 
 # 4) Öncelikli Yatırım Sorgusu
