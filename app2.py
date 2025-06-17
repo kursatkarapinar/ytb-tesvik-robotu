@@ -24,7 +24,7 @@ faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in df_nace.iterrows()
 ]
-_ = st.selectbox("Faaliyete Göre NACE Kodu Bul", faaliyet_options)
+_ = st.selectbox("NACE Kodumu Bilmiyorum. Faaliyete Göre NACE Kodu Bul", faaliyet_options)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
