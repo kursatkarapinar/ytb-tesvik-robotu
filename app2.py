@@ -45,7 +45,7 @@ bolge_secim = st.radio(
 # 4) Öncelikli Yatırım Sorgusu
 oncelikli_options = [""] + oncelikli_yatirim_secim_listesi
 secim_oncelikli = st.selectbox(
-    "Listedeki Öncelikli Yatırımlardan mı?",
+    "Listedeki Öncelikli Yatırımlardan mı?*",
     oncelikli_options,
     index=0
 )
