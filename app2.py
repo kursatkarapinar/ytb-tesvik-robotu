@@ -20,8 +20,8 @@ with col2:
 # 0) NACE Kodu Girişi
 nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin")
 
-# 0.1) Faaliyete Göre NACE Kodumu Bul
-faaliyet_query = st.text_input("Faaliyete Göre NACE Kodumu Bul:")
+# 0.1) Faaliyete Göre NACE Kodu Bul
+faaliyet_query = st.text_input("Faaliyete Göre NACE Kodu Bul:")
 faaliyet_filtered = df_nace[
     df_nace["NACE REV. 2.1 KODU"].str.contains(faaliyet_query, case=False, na=False) |
     df_nace["NACE REV.2.1 TANIM"].str.contains(faaliyet_query, case=False, na=False)
@@ -30,8 +30,10 @@ faaliyet_options = [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in faaliyet_filtered.iterrows()
 ]
+selected_faaliyet = None
 if faaliyet_options:
-    _ = st.selectbox("Önerilen Faaliyete Göre NACE Kodları:", faaliyet_options)
+    selected_faaliyet = st.selectbox("Önerilen NACE Kodları:", faaliyet_options)
+    # Kullanıcı buradaki seçim işlemi sadece öneri amaçlıdır; değeri doğrudan kullanmıyoruz
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
