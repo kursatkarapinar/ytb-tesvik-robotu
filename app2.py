@@ -18,7 +18,7 @@ with col2:
 
 
 # 0) NACE Kodu Girişi
-nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin")
+nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin*")
 
 faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
@@ -29,24 +29,25 @@ _ = st.selectbox("Faaliyete Göre NACE Kodu Bul (Bulduktan sonra üst satırı g
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
 iller_options = [""] + iller
-secili_il = st.selectbox("İl Seçin", iller_options, index=0)
+secili_il = st.selectbox("İl Seçin*", iller_options, index=0)
 
 # 2) İlçe Seçimi
 ilceler = sorted(df_il_ilce[df_il_ilce["İl"] == secili_il]["İlçe"].unique())
 ilceler_options = [""] + ilceler
-secili_ilce = st.selectbox("İlçe Seçin", ilceler_options, index=0)
+secili_ilce = st.selectbox("İlçe Seçin*", ilceler_options, index=0)
 
 # 3) OSB veya Endüstri Bölgesi Sorgusu
 bolge_secim = st.radio(
-    "OSB veya Endüstri Bölgesi mi?",
+    "OSB veya Endüstri Bölgesi mi?*",
     ("Seçiniz...", "Evet", "Hayır"),
     index=0
 )
-
 # 4) Öncelikli Yatırım Sorgusu
+oncelikli_options = [""] + oncelikli_yatirim_secim_listesi
 secim_oncelikli = st.selectbox(
     "Listedeki Öncelikli Yatırımlardan mı?",
-    oncelikli_yatirim_secim_listesi
+    oncelikli_options,
+    index=0
 )
 
 col1, col2 = st.columns([3, 1])
@@ -59,10 +60,17 @@ with col2:
 # 5) Sorgula
 
 if st.button("Sorgula"):
-    # 5.0) Geçerlilik kontrolü
+    # 5.0) Genel alan doldurma kontrolü
+    if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "Seçiniz...":
+        st.error("❌ Lütfen tüm alanları eksiksiz doldurun!")
+        st.stop()
+    # 5.1) Geçerlilik kontrolü
+    # Geçerlilik kontrolü
     if nace_kodu not in df_nace["NACE REV. 2.1 KODU"].values:
         st.error("❌ Hatalı NACE Kodu girdiniz!")
-        st.stop()  # veya: return  # buradan sonraki kod çalışmaz
+        st.stop()
+
+
     # 5.1) Yatırımın Adı
     yatirim_adi = df_nace.loc[
         df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
