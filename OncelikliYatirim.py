@@ -1,6 +1,5 @@
 oncelikli_yatirim_secim_listesi = [
-    "Seçiniz...",
-    "a) Dijital Dönüşüm Programı veya Yeşil Dönüşüm Programı kapsamında desteklenmesine karar verilen yatırımlar.",
+        "a) Dijital Dönüşüm Programı veya Yeşil Dönüşüm Programı kapsamında desteklenmesine karar verilen yatırımlar.",
     "b) Teknoloji Hamlesi Programı kapsamında yayımlanan öncelikli ürün listesinde belirtilen yüksek teknolojili ürünlerin üretimine yönelik yatırımlar ile asgari 500 milyon TL tutarındaki yüksek teknolojili ürünlerin üretimine yönelik yatırımlar.",
     "c) İstanbul ilinde gerçekleştirilecek olan yatırımlar hariç olmak üzere; Teknoloji Hamlesi Programı kapsamında yayımlanan öncelikli ürün listesinde belirtilen orta yüksek teknolojili ürünlerin üretimine yönelik yatırımlar ile asgari 1 milyar TL tutarındaki orta yüksek teknolojili ürünlerin üretimine yönelik yatırımlar.",
     "ç) Müteharrik karakterli yatırımlar hariç olmak üzere; 6 ncı bölgede yapılan yatırımlar, geçici 3 üncü ve geçici 4 üncü maddeler kapsamında değerlendirilen yatırımlar.",
