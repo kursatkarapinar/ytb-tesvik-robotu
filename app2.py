@@ -62,7 +62,7 @@ with col2:
 if st.button("Sorgula"):
     # 5.0) Genel alan doldurma kontrolü
     if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "Seçiniz...":
-        st.error("❌ Lütfen tüm alanları eksiksiz doldurun!")
+        st.error("❌ Lütfen Tüm Alanları(*) Eksiksiz Doldurun!")
         st.stop()
     # 5.1) Geçerlilik kontrolü
     # Geçerlilik kontrolü
