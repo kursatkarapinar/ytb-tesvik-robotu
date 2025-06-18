@@ -17,14 +17,16 @@ with col2:
 # … geri kalan kodunuz …
 
 
-# 0) NACE Kodu Girişi
-nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin*")
-
 faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in df_nace.iterrows()
 ]
-_ = st.selectbox("NACE Kodumu Bilmiyorum. Faaliyete Göre NACE Kodu Bul", faaliyet_options)
+selection = st.selectbox(
+    "NACE Kodunu Seçin (Faaliyete Göre):",
+    faaliyet_options
+)
+# seçilen değerden sadece kodu ayıkla
+nace_kodu = selection.split(" - ")[0] if selection else ""
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
