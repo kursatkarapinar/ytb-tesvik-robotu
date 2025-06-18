@@ -18,7 +18,7 @@ with col2:
 
 
 # 0) NACE Kodu Girişi 
-nace_kodu = st.text_input("NACE Kodunu (XX.XX.XX) Şeklinde Girin*")
+
 
 # 1) Faaliyet listesini oluştur
 faaliyet_options = [""] + [
@@ -37,7 +37,6 @@ if not nace_kodu and selected_option:
     # "XX.XX.XX - Açıklama" formatından sadece kodu al
     nace_kodu = selected_option.split(" - ")[0]
 
-st.write("Seçilen/Belirlenen NACE Kodu:", nace_kodu)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
