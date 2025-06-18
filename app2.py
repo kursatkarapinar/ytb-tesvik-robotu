@@ -95,20 +95,28 @@ if st.button("Sorgula"):
     yararlanilan_bolge = min(yararlanilan_bolge, 6)
     yararlanilacak_bolge_yazi = f"{yararlanilan_bolge}. Bölge"
 
-    # 5.3) Öncelikli Yatırım mı?
-    oncelikli_flag = "Hayır" if secim_oncelikli in ["Seçiniz...", "z) Hayır."] else "Evet"
 
-    # 5.4) Hedef Yatırım mı? & Özel Şartlar
-    satirlar = df_hedef_yatirim[
+        # Öncelikli/Hedef Yatırım
+    oncelikli_flag = "Hayır" if secim_oncelikli in ["Seçiniz...", "z) Hayır."] else "Evet"
+    matches = df_hedef_yatirim[
         df_hedef_yatirim["NACE KODU"].astype(str)
         .apply(lambda pat: fnmatch.fnmatch(nace_kodu, pat))
     ]
-    if not satirlar.empty:
+    if not matches.empty:
         hedef_flag = "Evet"
-        ozel_sart = satirlar["Özel Şartlar"].iloc[0]
+        ozel_sart = matches["Özel Şartlar"].iloc[0]
     else:
         hedef_flag = "Hayır"
         ozel_sart = "Hedef Yatırım Değildir"
+
+    # Eğer hem Öncelikli hem Hedef yatırım hayırsa uyar ve durdur
+    if oncelikli_flag == "Hayır" and hedef_flag == "Hayır":
+        st.error("Seçtiğiniz NACE Kodu Yatırım Teşvik Belgesi kapsamında desteklenmemektedir.")
+        st.stop()
+
+    # Sonuç özeti
+
+    
 
     # 5.5) Seçim Özeti
     st.subheader("Sonuçlar")
@@ -180,7 +188,7 @@ if st.button("Sorgula"):
 
     # İlgili mevzuat metni
     st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
-    
+
 import streamlit as st
 
 
