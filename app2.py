@@ -22,7 +22,7 @@ faaliyet_options = [""] + [
     for _, row in df_nace.iterrows()
 ]
 selection = st.selectbox(
-    "NACE Kodunu Seçin ((Kelime Bazlı NACE Kodu Arama)*:",
+    "NACE Kodunu Seçin (Kelime Bazlı NACE Kodu Arama)*:",
     faaliyet_options
 )
 # seçilen değerden sadece kodu ayıkla
