@@ -17,26 +17,21 @@ with col2:
 # … geri kalan kodunuz …
 
 
-# 0) NACE Kodu Girişi 
-
-
-# 1) Faaliyet listesini oluştur
+faaliyet_query = st.text_input("Faaliyete Göre NACE Kodu Bul")
 faaliyet_options = [""] + [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
+    for _, row in df_nace[
+        df_nace['NACE REV. 2.1 KODU'].str.contains(faaliyet_query, case=False, na=False) |
+        df_nace['NACE REV.2.1 TANIM'].str.contains(faaliyet_query, case=False, na=False)
+    ].iterrows()
 ]
-
-# 2) Seçeneği göster ve seçili değeri al
-selected_option = st.selectbox(
+selected_faaliyet = st.selectbox(
     "NACE Kodumu Bilmiyorum. Faaliyete Göre NACE Kodu Bul",
     faaliyet_options
 )
-
-# 3) Eğer text_input boşsa, selectbox'tan gelen kodu al
-if not nace_kodu and selected_option:
-    # "XX.XX.XX - Açıklama" formatından sadece kodu al
-    nace_kodu = selected_option.split(" - ")[0]
-
+# Eğer kullanıcı text_input boşsa ve bir faaliyet seçtiyse, text_input'ı override et
+if not st.session_state.nace_kodu and selected_faaliyet:
+    nace_kodu = selected_faaliyet.split(" - ")[0]
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
