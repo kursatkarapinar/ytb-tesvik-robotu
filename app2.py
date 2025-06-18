@@ -88,7 +88,7 @@ if st.button("Sorgula"):
 
     # Yararlanılacak Bölge hesapla (önceki mantık)
     yararlanilan_bolge = bolge_no
-    if secili_ilce and secili_ilce not in ["Diğer İlçeler", "Tüm İlçeler"]
+    if secili_ilce and secili_ilce not in ["Diğer İlçeler", "Tüm İlçeler"]:
         yararlanilan_bolge += 1
     if bolge_secim == "Evet":
         yararlanilan_bolge += 1
