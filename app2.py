@@ -61,7 +61,7 @@ with col2:
 
 if st.button("Sorgula"):
     # 5.0) Genel alan doldurma kontrolü
-    if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "Seçiniz...":
+    if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "":
         st.error("❌ Lütfen Tüm Alanları (*) Eksiksiz Doldurun!")
         st.stop()
     # 5.1) Geçerlilik kontrolü
@@ -88,7 +88,7 @@ if st.button("Sorgula"):
 
     # Yararlanılacak Bölge hesapla (önceki mantık)
     yararlanilan_bolge = bolge_no
-    if secili_ilce != "Diğer İlçeler":
+    if secili_ilce and secili_ilce not in ["Diğer İlçeler", "Tüm İlçeler"]
         yararlanilan_bolge += 1
     if bolge_secim == "Evet":
         yararlanilan_bolge += 1
