@@ -29,7 +29,16 @@ faaliyet_options = [""] + [
         df_nace['NACE REV.2.1 TANIM'].str.contains(faaliyet_query, case=False, na=False)
     ].iterrows()
 ]
-selected_faaliyet = st.selectbox("Faaliyete Göre NACE Kodu Bul", faaliyet_options)
+def _update_nace():
+    if st.session_state.faaliyet_selection:
+        st.session_state.nace_kodu = st.session_state.faaliyet_selection.split(" - ")[0]
+
+selected_faaliyet = st.selectbox(
+    "Faaliyete Göre NACE Kodu Bul",
+    faaliyet_options,
+    key="faaliyet_selection",
+    on_change=_update_nace
+)
 # Eğer önerilen listeden seçim yapıldıysa, NACE kodunu otomatik güncelle
 if selected_faaliyet:
     code_only = selected_faaliyet.split(" - ")[0]
