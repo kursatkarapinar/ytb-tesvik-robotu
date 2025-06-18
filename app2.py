@@ -172,6 +172,11 @@ if st.button("Sorgula"):
 
     # 5.13) Ekosistem Geliştirme Planı
     st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
+    # Uyarı
+    st.markdown("_Bu içerik hızlı kontrol amaçlıdır; bağlayıcı sonuçlar için resmi mevzuat metinlerinin esas alınması gerekir._")
+
+    # İlgili mevzuat metni
+    st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
 import streamlit as st
 
 
