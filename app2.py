@@ -180,6 +180,7 @@ if st.button("Sorgula"):
 
     # İlgili mevzuat metni
     st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
+    
 import streamlit as st
 
 
