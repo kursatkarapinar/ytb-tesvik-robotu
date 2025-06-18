@@ -176,7 +176,7 @@ if st.button("Sorgula"):
 
 
     # Uyarı
-    st.markdown("_⚠️ Bu içerik hızlı kontrol amaçlıdır; bağlayıcı sonuçlar için resmi mevzuat metinlerinin esas alınması gerekir._")
+    st.markdown("_⚠️ Bu içerik ön bilgilendirme amaçlıdır; bağlayıcı hükümlere ulaşmak için resmi mevzuat metinlerini inceleyiniz._")
 
     # İlgili mevzuat metni
     st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
