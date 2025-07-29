@@ -1,11 +1,13 @@
 import streamlit as st
 import pandas as pd
 import fnmatch
+from streamlit_autocomplete import st_single_select
 from il_ilce_data import df_il_ilce
 from Hangibolge import df_il_bolge
 from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
+
 
 
 
@@ -16,40 +18,26 @@ with col2:
 
 # 0) NACE Kodunu Seçiniz
 
-st.title("0) NACE Kodunu Seçiniz")
+# 1) Tüm kod–tanım listesi
+options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in df_nace.iterrows()
+]
 
-# 1) Arama terimini al
-search_term = st.text_input(
-    "NACE Kodunu Arayın…",
-    placeholder="Örneğin: kalem, 25.61.07 …"
-).strip()
+# 2) Tek widget autocomplete
+selection = st_single_select(
+    label="NACE Kodunu Seçin (Yaz → Anında Filtrele):",
+    options=options,
+    placeholder="Örn. kalem, 25.61.07 …",
+    case_sensitive=False,
+    match_partial=True,    # substring eşi̇leşme
+    max_suggestions=10
+)
 
-# 2) Filtrele
-if search_term:
-    filtered = [
-        f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-        for _, row in df_nace.iterrows()
-        if search_term.lower() in (
-            str(row['NACE REV. 2.1 KODU']) + " " + row['NACE REV.2.1 TANIM']
-        ).lower()
-    ]
-else:
-    filtered = []
-
-# 3) Eğer eşleşme varsa seçilebilir listeyi göster
-if filtered:
-    selection = st.selectbox(
-        "Eşleşen NACE Kodları:",
-        filtered,
-        index=0,
-        help="Yukarıdaki liste, yazdığınız kelimeye göre daraltıldı."
-    )
-    nace_kodu = selection.split(" - ")[0]
+# 3) Kodu ayıkla ve göster
+nace_kodu = selection.split(" - ")[0] if selection else ""
+if nace_kodu:
     st.success(f"Seçilen NACE Kodu: {nace_kodu}")
-elif search_term:
-    # arama var ama eşleşme yoksa uyarı
-    st.warning("Eşleşen NACE kodu bulunamadı!")
-# else: search_term boşsa hiçbir şey gösterme
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
