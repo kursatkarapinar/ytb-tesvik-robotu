@@ -14,18 +14,29 @@ col1, col2, col3 = st.columns([1, 5, 1])
 with col2:
     st.title("Yeni YTB Teşvik Robotu")
 
-# 0) NACE Kodunu Seçiniz
+# 0) NACE Kodunu Seçiniz (Anahtar Kelime Bazlı + En Uygun 6 Öneri)
+search_term = st.text_input("NACE Kodu veya Anahtar Kelime Girin:")
+# Aramaya göre filtrele (kod veya tanım üzerinden)
+if search_term:
+    matched = df_nace[
+        df_nace["NACE REV. 2.1 KODU"].str.startswith(search_term, na=False) |
+        df_nace["NACE REV.2.1 TANIM"].str.contains(search_term, case=False, na=False)
+    ]
+else:
+    matched = df_nace
 
+# Yalnızca ilk 6 taneyi öneri olarak hazırla
+options = matched.head(6).apply(
+    lambda row: f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}",
+    axis=1
+).tolist()
 
-faaliyet_options = [""] + [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
-]
 selection = st.selectbox(
-    "NACE Kodunu Seçin (Kelime Bazlı NACE Kodu Arama)*:",
-    faaliyet_options
+    "NACE Kodunu Seçin *:",
+    [""] + options
 )
-# seçilen değerden sadece kodu ayıkla
+
+# sadece kodu ayıkla
 nace_kodu = selection.split(" - ")[0] if selection else ""
 
 # 1) İl Seçimi
