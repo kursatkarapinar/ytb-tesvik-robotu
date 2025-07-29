@@ -19,19 +19,18 @@ with col2:
 
 st.title("Tek Satırda Anlık NACE Autocomplete")
 
-# 1) Session state’de arama ve seçimi tutalım
+# 1) State’i başlat
 if 'nace_search' not in st.session_state:
     st.session_state['nace_search'] = ''
 
-# 2) Text input’u hem göster hem de güncelle
+# 2) Text input (otomatik olarak st.session_state['nace_search'] ile bağlandı)
 search_term = st.text_input(
     "NACE Kodunu Arayın…",
-    value=st.session_state['nace_search'],
     key="nace_search",
     placeholder="Örn. kalem, 25.61.07 …"
 ).strip()
 
-# 3) Kod+Tanım tek sütunda birleşsin
+# 3) Kod + Tanım sütunlarını birleştir
 combined = (
     df_nace['NACE REV. 2.1 KODU'].astype(str)
     + " - "
@@ -44,28 +43,28 @@ if search_term:
 else:
     suggestions = []
 
-# 5) Önerileri buton olarak alt alta göster (en fazla 10’a kesiyoruz)
-for i, option in enumerate(suggestions[:10]):
-    if st.button(option, key=f"opt_{i}"):
-        # Tıklanınca input’u güncelle
-        st.session_state['nace_search'] = option
-        search_term = option  # hemen güncellesin
+# 5) “Seçme” callback fonksiyonu
+def choose(option):
+    st.session_state['nace_search'] = option
 
-# 6) Tam eşleşme üzerinden kodu ayıkla
-if search_term and suggestions:
-    # Eğer kullanıcı tam bir öneri tıkladıysa
-    if search_term in suggestions:
-        nace_kodu = search_term.split(" - ")[0]
-        st.success(f"Seçilen NACE Kodu: **{nace_kodu}**")
-    else:
-        st.info("Lütfen aşağıdaki butonlardan bir öneri seçin.")
+# 6) Önerileri BUTON olarak göster (en fazla 10)
+if suggestions:
+    for i, option in enumerate(suggestions[:10]):
+        st.button(option, key=f"opt_{i}", on_click=choose, args=(option,))
 else:
     if search_term:
         st.warning("Eşleşen NACE kodu bulunamadı!")
+
+# 7) Eğer kullanıcı tam bir öneriyi tıkladıysa kodu ayıkla
+if search_term and search_term in suggestions:
+    nace_kodu = search_term.split(" - ")[0]
+    st.success(f"Seçilen NACE Kodu: **{nace_kodu}**")
+else:
     nace_kodu = ""
 
-# downstream’da kullanmak üzere
+# downstream’da kullanmak için:
 # st.session_state['nace_kodu'] = nace_kodu
+
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
 iller_options = [""] + iller
