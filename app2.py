@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import fnmatch
-from streamlit_autocomplete import st_single_select
 from il_ilce_data import df_il_ilce
 from Hangibolge import df_il_bolge
 from OncelikliYatirim import oncelikli_yatirim_secim_listesi
