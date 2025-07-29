@@ -17,16 +17,46 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-faaliyet_options = [""] + [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
-]
-selection = st.selectbox(
-    "NACE Kodunu Seçin (Kelime Bazlı NACE Kodu Arama)*:",
-    faaliyet_options
+# 1) Arama terimini al
+search_term = st.text_input(
+    "NACE Kodunu Seçin (Kelime Bazlı Arama)*:",
+    placeholder="Kod veya açıklama içeren bir kelime yazın…"
 )
-# seçilen değerden sadece kodu ayıkla
-nace_kodu = selection.split(" - ")[0] if selection else ""
+
+# 2) DataFrame’i arama terimine göre filtrele
+if search_term:
+    mask = (
+        df_nace['NACE REV. 2.1 KODU'].astype(str)
+            .str.contains(search_term, case=False, na=False)
+        |
+        df_nace['NACE REV.2.1 TANIM']
+            .str.contains(search_term, case=False, na=False)
+    )
+    filtered = df_nace[mask]
+else:
+    # search_term boşsa tüm listeyi göster (veya isterseniz [] yapabilirsiniz)
+    filtered = df_nace.copy()
+
+# 3) Filtrelenmiş seçenek listesini hazırla
+faaliyet_options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in filtered.iterrows()
+]
+
+# 4) Eşleşen yoksa uyarı, varsa selectbox
+if faaliyet_options:
+    selection = st.selectbox(
+        "Bulunan NACE Kodları:",
+        [""] + faaliyet_options,
+        index=0
+    )
+    # seçilen değerden sadece kodu ayıkla
+    nace_kodu = selection.split(" - ")[0] if selection else ""
+else:
+    st.warning("Eşleşen NACE kodu bulunamadı!")
+    nace_kodu = ""
+
+st.write("Seçilen NACE Kodu:", nace_kodu)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
