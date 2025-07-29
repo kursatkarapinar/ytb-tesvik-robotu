@@ -17,38 +17,23 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-st.title("NACE Kodunu Seçiniz (Kelime Bazlı Arama)")
+# tüm kod–tanım çiftlerini hazırla
+options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in df_nace.iterrows()
+]
 
-# Arama terimini alıyoruz
-search_term = st.text_input(
-    "Kelimeyle arayın…",
-    placeholder="Ör. kalem, 25.61.07 …"
-).strip()
+selection = st_single_select(
+    label="NACE Kodunu Seçin (Yaz → Açılır, Altında Filtrele):",
+    options=options,
+    placeholder="Örn. kalem, 25.61.07 …",
+    case_sensitive=False,
+    match_partial=True,    # substring bazlı eşleşsin
+    max_suggestions=10
+)
 
-# Sadece search_term varsa seçenekleri filtreliyoruz
-if search_term:
-    faaliyet_options = [
-        f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-        for _, row in df_nace.iterrows()
-        if search_term.lower() in (
-            str(row['NACE REV. 2.1 KODU']) 
-            + " " 
-            + row['NACE REV.2.1 TANIM']
-        ).lower()
-    ]
-    # Eğer eşleşme varsa selectbox aç
-    if faaliyet_options:
-        selection = st.selectbox(
-            "Eşleşen NACE Kodları:",
-            faaliyet_options
-        )
-        nace_kodu = selection.split(" - ")[0]
-        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
-    else:
-        st.warning("Eşleşen NACE kodu bulunamadı!")
-else:
-    # search_term boşsa hiçbir liste gösterilmesin
-    nace_kodu = ""
+nace_kodu = selection.split(" - ")[0] if selection else ""
+st.write("Seçilen NACE Kodu:", nace_kodu)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
