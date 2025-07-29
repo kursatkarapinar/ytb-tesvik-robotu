@@ -17,23 +17,45 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-# tüm kod–tanım çiftlerini hazırla
-options = [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
-]
+st.title("NACE Kodunu Seçiniz")
 
-selection = st_single_select(
-    label="NACE Kodunu Seçin (Yaz → Açılır, Altında Filtrele):",
-    options=options,
-    placeholder="Örn. kalem, 25.61.07 …",
-    case_sensitive=False,
-    match_partial=True,    # substring bazlı eşleşsin
-    max_suggestions=10
+# 1) State başlatmaları
+if 'nace_search' not in st.session_state:
+    st.session_state['nace_search'] = ""
+if 'nace_kodu' not in st.session_state:
+    st.session_state['nace_kodu'] = ""
+
+# 2) Arama kutusu (tek satır)
+search_term = st.text_input(
+    "Arama:",
+    key="nace_search",
+    placeholder="Örn. kalem, 25.61.07 …"
+).strip()
+
+# 3) Kod+Tanım birleşimi
+combined = (
+    df_nace['NACE REV. 2.1 KODU'].astype(str)
+    + " - "
+    + df_nace['NACE REV.2.1 TANIM']
 )
 
-nace_kodu = selection.split(" - ")[0] if selection else ""
-st.write("Seçilen NACE Kodu:", nace_kodu)
+# 4) Substring filtresi  
+suggestions = []
+if search_term:
+    suggestions = combined[combined.str.contains(search_term, case=False, na=False)].tolist()
+
+# 5) Butonlarla önerileri göster
+def select_option(option):
+    # Tıklanınca hem input’u hem de sonuc state’ini güncelle
+    st.session_state['nace_search'] = option
+    st.session_state['nace_kodu'] = option.split(" - ")[0]
+
+for i, option in enumerate(suggestions):
+    st.button(option, key=f"sugg_{i}", on_click=select_option, args=(option,))
+
+# 6) Seçilen sonucu göster
+if st.session_state['nace_kodu']:
+    st.success(f"Seçilen NACE Kodu: {st.session_state['nace_kodu']}")
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
