@@ -17,26 +17,35 @@ with col2:
 
 # 0) NACE Kodunu Seçiniz
 
-# 1) Tüm kod–tanım listesi
-options = [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
-]
-
-# 2) Tek widget autocomplete
-selection = st_single_select(
-    label="NACE Kodunu Seçin (Yaz → Anında Filtrele):",
-    options=options,
-    placeholder="Örn. kalem, 25.61.07 …",
-    case_sensitive=False,
-    match_partial=True,    # substring eşi̇leşme
-    max_suggestions=10
+# df_nace’iniz önceden tanımlı olsun
+combined = (
+    df_nace['NACE REV. 2.1 KODU'].astype(str)
+    + " - "
+    + df_nace['NACE REV.2.1 TANIM']
 )
 
-# 3) Kodu ayıkla ve göster
-nace_kodu = selection.split(" - ")[0] if selection else ""
-if nace_kodu:
-    st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+st.title("NACE Kodunu Seçiniz")
+
+# 1) Yazdığınız her karakteri yakala
+search = st.text_input("Arama…", placeholder="Örn. kalem, 25.61.07 …").strip()
+
+# 2) Sadece eşleşenleri bulun
+matches = []
+if search:
+    matches = [opt for opt in combined.tolist() if search.lower() in opt.lower()]
+
+# 3) Önerileri buton olarak alt alta göster
+def pick(val):
+    st.session_state["picked"] = val
+
+for i, option in enumerate(matches[:10]):
+    st.button(option, key=f"m{i}", on_click=pick, args=(option,))
+
+# 4) Seçildi ise göster
+if "picked" in st.session_state:
+    sel = st.session_state["picked"]
+    kod = sel.split(" - ")[0]
+    st.success(f"Seçilen NACE Kodu: {kod}")
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
