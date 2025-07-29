@@ -27,7 +27,7 @@ faaliyet_options = [
 
 # 1) Arama terimini tek satırda al
 search_term = st.text_input(
-    "Bir kelime yazın…",
+    "Nace Kodunu veya Konuyu Arayın…",
     placeholder="Örn. kalem, 25.61.07 …"
 ).strip()
 
