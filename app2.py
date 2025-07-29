@@ -17,7 +17,7 @@ with col2:
 
 # 0) NACE Kodunu Seçiniz
 
-st.title("NACE Kodunu Seçiniz (Kelime Bazlı Arama)")
+st.subtitle("NACE Kodunu Seçiniz (Kelime Bazlı Arama)")
 
 # 0) Tüm kod–tanım çiftlerini hazırla
 faaliyet_options = [
