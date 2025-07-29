@@ -17,22 +17,41 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-faaliyet_options = [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
-]
+st.title("Kelime Bazlı NACE Kodu Arama")
 
-selection = st_single_select(
-    label="NACE Kodunu Seçin (Yazmaya başlayınca filtrelenecek):",
-    options=faaliyet_options,
-    placeholder="Kod veya açıklama içinde geçen bir kelime yazın…",
-    case_sensitive=False,
-    match_partial=True,       # substring bazlı eşleşme
-    max_suggestions=10        # isterseniz liste uzunluğunu sınırlandırabilirsiniz
+# 1) Arama terimi
+search_term = st.text_input(
+    "Arama:", 
+    placeholder="Kod veya tanım içinde bir kelime yazın…"
+).strip()
+
+# 2) Kod + Tanım’ı birleştir
+combined = (
+    df_nace['NACE REV. 2.1 KODU'].astype(str)
+    + " - "
+    + df_nace['NACE REV.2.1 TANIM']
 )
 
-nace_kodu = selection.split(" - ")[0] if selection else ""
-st.write("Seçilen NACE Kodu:", nace_kodu)
+# 3) Sadece search_term varsa filtrele
+if search_term:
+    mask = combined.str.contains(search_term, case=False, na=False)
+    options = combined[mask].tolist()
+else:
+    options = []
+
+# 4) Sonuçları göster
+if options:
+    selection = st.selectbox(
+        "Eşleşen NACE Kodları:",
+        options,
+        index=0
+    )
+    nace_kodu = selection.split(" - ")[0]
+    st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+else:
+    if search_term:
+        st.warning("Eşleşen NACE kodu bulunamadı!")
+    nace_kodu = ""
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
 iller_options = [""] + iller
