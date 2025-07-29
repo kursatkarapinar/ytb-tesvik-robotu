@@ -17,35 +17,46 @@ with col2:
 
 # 0) NACE Kodunu Seçiniz
 
-# df_nace’iniz önceden tanımlı olsun
-combined = (
-    df_nace['NACE REV. 2.1 KODU'].astype(str)
-    + " - "
-    + df_nace['NACE REV.2.1 TANIM']
-)
+st.title("NACE Kodunu Seçiniz (Kelime Bazlı Arama)")
 
-st.title("NACE Kodunu Seçiniz")
+# 0) Tüm kod–tanım çiftlerini hazırla
+faaliyet_options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in df_nace.iterrows()
+]
 
-# 1) Yazdığınız her karakteri yakala
-search = st.text_input("Arama…", placeholder="Örn. kalem, 25.61.07 …").strip()
+# 1) Arama terimini tek satırda al
+search_term = st.text_input(
+    "Bir kelime yazın…",
+    placeholder="Örn. kalem, 25.61.07 …"
+).strip()
 
-# 2) Sadece eşleşenleri bulun
-matches = []
-if search:
-    matches = [opt for opt in combined.tolist() if search.lower() in opt.lower()]
+# 2) Aramaya göre filtrele (substring bazlı)
+if search_term:
+    filtered = [
+        opt for opt in faaliyet_options
+        if search_term.lower() in opt.lower()
+    ]
+else:
+    # search_term boşken tüm listeyi göstermek yerine hiçbir şey göstermeyebilirsiniz:
+    filtered = []
 
-# 3) Önerileri buton olarak alt alta göster
-def pick(val):
-    st.session_state["picked"] = val
-
-for i, option in enumerate(matches[:10]):
-    st.button(option, key=f"m{i}", on_click=pick, args=(option,))
-
-# 4) Seçildi ise göster
-if "picked" in st.session_state:
-    sel = st.session_state["picked"]
-    kod = sel.split(" - ")[0]
-    st.success(f"Seçilen NACE Kodu: {kod}")
+# 3) Eğer eşleşme varsa selectbox’u göster, yoksa uyarı ver
+if filtered:
+    # Başına isterseniz boş bir değer ekleyebilirsiniz:
+    selection = st.selectbox(
+        "Eşleşen NACE Kodları:",
+        [""] + filtered,
+        index=0
+    )
+    nace_kodu = selection.split(" - ")[0] if selection else ""
+    if nace_kodu:
+        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+else:
+    if search_term:
+        st.warning("Eşleşen NACE kodu bulunamadı!")
+    # hiçbir şey seçilmedi
+    nace_kodu = ""
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
