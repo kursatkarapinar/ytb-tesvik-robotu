@@ -17,53 +17,37 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-st.title("Tek Satırda Anlık NACE Autocomplete")
+st.title("NACE Kodunu Seçiniz (Kelime Bazlı Filtreleme)")
 
-# 1) State’i başlat
-if 'nace_search' not in st.session_state:
-    st.session_state['nace_search'] = ''
+# 1) Tüm seçenekleri hazırlıyoruz (boş seçenek de ekledik)
+all_options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in df_nace.iterrows()
+]
+all_options.insert(0, "")  # en başta boş seçim
 
-# 2) Text input (otomatik olarak st.session_state['nace_search'] ile bağlandı)
+# 2) Arama terimini al
 search_term = st.text_input(
     "NACE Kodunu Arayın…",
-    key="nace_search",
-    placeholder="Örn. kalem, 25.61.07 …"
+    placeholder="Örneğin: kalem, 25.61.07 …"
 ).strip()
 
-# 3) Kod + Tanım sütunlarını birleştir
-combined = (
-    df_nace['NACE REV. 2.1 KODU'].astype(str)
-    + " - "
-    + df_nace['NACE REV.2.1 TANIM']
+# 3) Filtreleme: eğer search_term varsa sadece eşleşenleri, yoksa tüm listeyi al
+if search_term:
+    filtered = [opt for opt in all_options if search_term.lower() in opt.lower()]
+else:
+    filtered = all_options
+
+# 4) Sadece filtered list’teki elemanları göster
+selection = st.selectbox(
+    "Bulunan NACE Kodları:",
+    filtered,
+    index=0
 )
 
-# 4) Substring filtresi
-if search_term:
-    suggestions = combined[combined.str.contains(search_term, case=False, na=False)].tolist()
-else:
-    suggestions = []
-
-# 5) “Seçme” callback fonksiyonu
-def choose(option):
-    st.session_state['nace_search'] = option
-
-# 6) Önerileri BUTON olarak göster (en fazla 10)
-if suggestions:
-    for i, option in enumerate(suggestions[:10]):
-        st.button(option, key=f"opt_{i}", on_click=choose, args=(option,))
-else:
-    if search_term:
-        st.warning("Eşleşen NACE kodu bulunamadı!")
-
-# 7) Eğer kullanıcı tam bir öneriyi tıkladıysa kodu ayıkla
-if search_term and search_term in suggestions:
-    nace_kodu = search_term.split(" - ")[0]
-    st.success(f"Seçilen NACE Kodu: **{nace_kodu}**")
-else:
-    nace_kodu = ""
-
-# downstream’da kullanmak için:
-# st.session_state['nace_kodu'] = nace_kodu
+# 5) Seçilen değerden sadece kodu ayıkla
+nace_kodu = selection.split(" - ")[0] if selection else ""
+st.write("Seçilen NACE Kodu:", nace_kodu)
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
