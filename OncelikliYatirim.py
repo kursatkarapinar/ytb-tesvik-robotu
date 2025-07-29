@@ -1,4 +1,5 @@
 oncelikli_yatirim_secim_listesi = [
+        "Hayır.",
         "a) Dijital Dönüşüm Programı veya Yeşil Dönüşüm Programı kapsamında desteklenmesine karar verilen yatırımlar.",
     "b) Teknoloji Hamlesi Programı kapsamında yayımlanan öncelikli ürün listesinde belirtilen yüksek teknolojili ürünlerin üretimine yönelik yatırımlar ile asgari 500 milyon TL tutarındaki yüksek teknolojili ürünlerin üretimine yönelik yatırımlar.",
     "c) İstanbul ilinde gerçekleştirilecek olan yatırımlar hariç olmak üzere; Teknoloji Hamlesi Programı kapsamında yayımlanan öncelikli ürün listesinde belirtilen orta yüksek teknolojili ürünlerin üretimine yönelik yatırımlar ile asgari 1 milyar TL tutarındaki orta yüksek teknolojili ürünlerin üretimine yönelik yatırımlar.",
@@ -27,5 +28,5 @@ oncelikli_yatirim_secim_listesi = [
     "ü) 25 dekar ve üzeri yurtiçinde üretilen sera teknolojilerini ihtiva eden otomasyona dayalı (bilgisayar kontrollü iklimlendirme, sulama, gübreleme ve ilaçlama sistemi ihtiva eden) topraksız sera yatırımları.",
     "v) Sanayi sicil belgesine sahip mevcut tesislerde yapılacak deprem veya yangın riskine karşı yapılan yatırımlar.",
     "y) Sanayi Genel Müdürlüğünden alınacak uygunluk yazısına istinaden gerçekleştirilecek afet teknolojileri alanındaki yatırımlar.",
-    "z) Hayır."
+    
 ]
