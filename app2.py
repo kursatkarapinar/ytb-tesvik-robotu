@@ -15,9 +15,6 @@ col1, col2, col3 = st.columns([1, 5, 1])
 with col2:
     st.title("Yeni YTB Teşvik Robotu")
 
-# 0) NACE Kodunu Seçiniz
-
-st.subheader("NACE Kodunu Seçiniz (Kelime Bazlı Arama)")
 
 # 0) Tüm kod–tanım çiftlerini hazırla
 faaliyet_options = [
