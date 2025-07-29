@@ -17,22 +17,21 @@ with col2:
 # 0) NACE Kodunu Seçiniz
 
 
-# df_nace zaten tanımlı
 faaliyet_options = [
     f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
     for _, row in df_nace.iterrows()
 ]
 
-selection = st.selectbox(
-    "NACE Kodunu Seçin (Yazmaya başlayın, filtrelenecek):",
-    [""] + faaliyet_options,
-    index=0,
-    help="Menüyü açıp yazmaya başladığınız anda listelenen seçenekler daralacaktır."
+selection = st_single_select(
+    label="NACE Kodunu Seçin (Yazmaya başlayınca filtrelenecek):",
+    options=faaliyet_options,
+    placeholder="Kod veya açıklama içinde geçen bir kelime yazın…",
+    case_sensitive=False,
+    match_partial=True,       # substring bazlı eşleşme
+    max_suggestions=10        # isterseniz liste uzunluğunu sınırlandırabilirsiniz
 )
 
-# seçilen değerden sadece kodu ayıkla
 nace_kodu = selection.split(" - ")[0] if selection else ""
-
 st.write("Seçilen NACE Kodu:", nace_kodu)
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
