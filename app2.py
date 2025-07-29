@@ -16,46 +16,40 @@ with col2:
 
 # 0) NACE Kodunu Seçiniz
 
+st.title("0) NACE Kodunu Seçiniz")
 
-st.title("NACE Kodunu Seçiniz")
-
-# 1) State başlatmaları
-if 'nace_search' not in st.session_state:
-    st.session_state['nace_search'] = ""
-if 'nace_kodu' not in st.session_state:
-    st.session_state['nace_kodu'] = ""
-
-# 2) Arama kutusu (tek satır)
+# 1) Arama terimini al
 search_term = st.text_input(
-    "Arama:",
-    key="nace_search",
-    placeholder="Örn. kalem, 25.61.07 …"
+    "NACE Kodunu Arayın…",
+    placeholder="Örneğin: kalem, 25.61.07 …"
 ).strip()
 
-# 3) Kod+Tanım birleşimi
-combined = (
-    df_nace['NACE REV. 2.1 KODU'].astype(str)
-    + " - "
-    + df_nace['NACE REV.2.1 TANIM']
-)
-
-# 4) Substring filtresi  
-suggestions = []
+# 2) Filtrele
 if search_term:
-    suggestions = combined[combined.str.contains(search_term, case=False, na=False)].tolist()
+    filtered = [
+        f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+        for _, row in df_nace.iterrows()
+        if search_term.lower() in (
+            str(row['NACE REV. 2.1 KODU']) + " " + row['NACE REV.2.1 TANIM']
+        ).lower()
+    ]
+else:
+    filtered = []
 
-# 5) Butonlarla önerileri göster
-def select_option(option):
-    # Tıklanınca hem input’u hem de sonuc state’ini güncelle
-    st.session_state['nace_search'] = option
-    st.session_state['nace_kodu'] = option.split(" - ")[0]
-
-for i, option in enumerate(suggestions):
-    st.button(option, key=f"sugg_{i}", on_click=select_option, args=(option,))
-
-# 6) Seçilen sonucu göster
-if st.session_state['nace_kodu']:
-    st.success(f"Seçilen NACE Kodu: {st.session_state['nace_kodu']}")
+# 3) Eğer eşleşme varsa seçilebilir listeyi göster
+if filtered:
+    selection = st.selectbox(
+        "Eşleşen NACE Kodları:",
+        filtered,
+        index=0,
+        help="Yukarıdaki liste, yazdığınız kelimeye göre daraltıldı."
+    )
+    nace_kodu = selection.split(" - ")[0]
+    st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+elif search_term:
+    # arama var ama eşleşme yoksa uyarı
+    st.warning("Eşleşen NACE kodu bulunamadı!")
+# else: search_term boşsa hiçbir şey gösterme
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
