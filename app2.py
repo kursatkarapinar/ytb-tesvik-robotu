@@ -126,7 +126,7 @@ if st.button("Sorgula"):
 
 
         # Öncelikli/Hedef Yatırım
-    oncelikli_flag = "Hayır" if secim_oncelikli in ["Seçiniz...", "z) Hayır."] else "Evet"
+    oncelikli_flag = "Hayır" if secim_oncelikli in ["Seçiniz...", "Hayır."] else "Evet"
     matches = df_hedef_yatirim[
         df_hedef_yatirim["NACE KODU"].astype(str)
         .apply(lambda pat: fnmatch.fnmatch(nace_kodu, pat))
