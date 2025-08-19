@@ -269,10 +269,10 @@ with right:
 
         with c2:
             st.markdown("**Net Satış Hasılatı (TL)**")
-            s2021 = st.number_input("2021 ", min_value=0, step=1000, key="s2021", format="%.2f")
-            s2022 = st.number_input("2022 ", min_value=0, step=1000, key="s2022", format="%.2f")
-            s2023 = st.number_input("2023 ", min_value=0, step=1000, key="s2023", format="%.2f")
-            s2024 = st.number_input("2024 ", min_value=0, step=1000, key="s2024", format="%.2f")
+            s2021 = st.number_input("2021 ", min_value=0, step=1000, key="s2021", format="%d")
+            s2022 = st.number_input("2022 ", min_value=0, step=1000, key="s2022", format="%d")
+            s2023 = st.number_input("2023 ", min_value=0, step=1000, key="s2023", format="%d")
+            s2024 = st.number_input("2024 ", min_value=0, step=1000, key="s2024", format="%d")
 
         submitted = st.form_submit_button("Sorgula")
 
