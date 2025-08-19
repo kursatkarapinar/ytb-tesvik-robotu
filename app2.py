@@ -307,9 +307,9 @@ if submitted:
             "Net Satış (Reel TL)": satis_vals_reel,
         })
 
-        for col in ["Prim Gün", "Net Satış (Nominal TL)", "Net Satış (Reel TL)"]:
-    if col in df_show.columns:
-        df_show[col] = df_show[col].apply(lambda x: f"{int(x):,}".replace(",", ".") if pd.notnull(x) else x)
+       for col in ["Prim Gün", "Net Satış (Nominal TL)", "Net Satış (Reel TL)"]:
+    df_show[col] = df_show[col].apply(lambda x: f"{int(x):,}".replace(",", ".") if pd.notnull(x) else x)
+
         st.dataframe(df_show, hide_index=True, use_container_width=True)
 
         st.info(
