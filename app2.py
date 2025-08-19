@@ -252,8 +252,9 @@ if st.button("Sorgula"):
 
 import streamlit as st
 
-
-st.title("KOSGEB ")
+col1, col2, col3 = st.columns([1, 5, 1])
+with col2:
+    st.title("KOSGEB")
 st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama" \
 "2021 ve 2024 rakamları hesaplamada kulllanılmaktadır")
 
