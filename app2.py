@@ -254,7 +254,8 @@ import streamlit as st
 
 
 st.title("KOSGEB ")
-st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama")
+st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama" \
+"2021 ve 2024 rakamları hesaplamada kulllanılmaktadır")
 
 with st.form("growth_form"):
     st.subheader("Veri Girişi")
