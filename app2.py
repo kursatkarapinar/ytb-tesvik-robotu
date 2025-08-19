@@ -218,6 +218,10 @@ if st.button("Sorgula"):
     # İlgili mevzuat metni
     st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
 
+
+
+import streamlit as st
+
 def cagr(v_start: float, v_end: float, years: int) -> float:
     """Yıllık bileşik büyüme (CAGR)"""
     try:
@@ -247,8 +251,4 @@ DEFLATORS = {
     2023: 0.6215,
     2024: 1.0,
 }
-
-import streamlit as st
-
-
 
