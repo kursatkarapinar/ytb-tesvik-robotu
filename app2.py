@@ -255,8 +255,8 @@ import streamlit as st
 col1, col2, col3 = st.columns([1, 5, 1])
 with col2:
     st.title("KOSGEB")
-st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama\n" 
-"2021 ve 2024 rakamları hesaplamada kulllanılmaktadır")
+st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama\n")
+st.caption("2021 ve 2024 rakamları hesaplamada kulllanılmaktadır")
 
 with st.form("growth_form"):
    
