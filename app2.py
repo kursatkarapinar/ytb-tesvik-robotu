@@ -269,7 +269,7 @@ with st.form("growth_form"):
    
     c1, c2 = st.columns(2)
 
-     with c1:
+    with c1:
         st.markdown("**SGK Prim Gün Sayısı**")
         p2021_str = st.text_input("2021", value="", placeholder="örn. 120000", key="p2021_str")
         p2022_str = st.text_input("2022", value="", placeholder="örn. 130000", key="p2022_str")
