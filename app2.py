@@ -6,7 +6,7 @@ from Hangibolge import df_il_bolge
 from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
-
+left, right = st.columns([2, 1], gap="large")
 
 def cagr(v_start: float, v_end: float, years: int) -> float:
     """Yıllık bileşik büyüme oranı (CAGR)"""
