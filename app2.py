@@ -253,8 +253,8 @@ with left:
 import streamlit as st
 
 with right:
-    st.title("Ortalama Büyüme Hesaplama (2021→2024)")
-    st.caption("SGK Prim Gün Sayısı ve Net Satış Hasılatı için CAGR hesaplanır. >%10 yeşil, aksi kırmızı.")
+    st.title("KOSGEB ")
+    st.caption("Kapasite Geliştirme - KÜresel Rekabetçilik için büyüme rakamları hesaplama")
 
     with st.form("growth_form"):
         st.subheader("Veri Girişi")
@@ -262,17 +262,17 @@ with right:
 
         with c1:
             st.markdown("**SGK Prim Gün Sayısı**")
-            p2021 = st.number_input("2021", min_value=0.0, step=1.0, key="p2021")
-            p2022 = st.number_input("2022", min_value=0.0, step=1.0, key="p2022")
-            p2023 = st.number_input("2023", min_value=0.0, step=1.0, key="p2023")
-            p2024 = st.number_input("2024", min_value=0.0, step=1.0, key="p2024")
+            p2021 = st.number_input("2021", min_value=0, step=1, key="p2021")
+            p2022 = st.number_input("2022", min_value=0, step=1, key="p2022")
+            p2023 = st.number_input("2023", min_value=0, step=1, key="p2023")
+            p2024 = st.number_input("2024", min_value=0, step=1, key="p2024")
 
         with c2:
             st.markdown("**Net Satış Hasılatı (TL)**")
-            s2021 = st.number_input("2021 ", min_value=0.0, step=1000.0, key="s2021", format="%.2f")
-            s2022 = st.number_input("2022 ", min_value=0.0, step=1000.0, key="s2022", format="%.2f")
-            s2023 = st.number_input("2023 ", min_value=0.0, step=1000.0, key="s2023", format="%.2f")
-            s2024 = st.number_input("2024 ", min_value=0.0, step=1000.0, key="s2024", format="%.2f")
+            s2021 = st.number_input("2021 ", min_value=0, step=1000, key="s2021", format="%.2f")
+            s2022 = st.number_input("2022 ", min_value=0, step=1000, key="s2022", format="%.2f")
+            s2023 = st.number_input("2023 ", min_value=0, step=1000, key="s2023", format="%.2f")
+            s2024 = st.number_input("2024 ", min_value=0, step=1000, key="s2024", format="%.2f")
 
         submitted = st.form_submit_button("Sorgula")
 
