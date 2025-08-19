@@ -8,6 +8,13 @@ from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
 
 
+def parse_int(s: str) -> int | None:
+    """'1.234.567' veya '1234567' → 1234567; boş ya da hatalıysa None döner"""
+    if s is None:
+        return None
+    s = s.strip().replace(".", "")
+    return int(s) if s.isdigit() else None
+
 def cagr(v_start: float, v_end: float, years: int) -> float:
     """Yıllık bileşik büyüme oranı (CAGR)"""
     try:
@@ -262,23 +269,42 @@ with st.form("growth_form"):
    
     c1, c2 = st.columns(2)
 
-    with c1:
+     with c1:
         st.markdown("**SGK Prim Gün Sayısı**")
-        p2021 = st.number_input("2021", min_value=0, step=1, key="p2021")
-        p2022 = st.number_input("2022", min_value=0, step=1, key="p2022")
-        p2023 = st.number_input("2023", min_value=0, step=1, key="p2023")
-        p2024 = st.number_input("2024", min_value=0, step=1, key="p2024")
+        p2021_str = st.text_input("2021", value="", placeholder="örn. 120000", key="p2021_str")
+        p2022_str = st.text_input("2022", value="", placeholder="örn. 130000", key="p2022_str")
+        p2023_str = st.text_input("2023", value="", placeholder="örn. 140000", key="p2023_str")
+        p2024_str = st.text_input("2024", value="", placeholder="örn. 150000", key="p2024_str")
 
     with c2:
         st.markdown("**Net Satış Hasılatı (TL)**")
-        s2021 = st.number_input("2021 ", min_value=0, step=1000, key="s2021", format="%d")
-        s2022 = st.number_input("2022 ", min_value=0, step=1000, key="s2022", format="%d")
-        s2023 = st.number_input("2023 ", min_value=0, step=1000, key="s2023", format="%d")
-        s2024 = st.number_input("2024 ", min_value=0, step=1000, key="s2024", format="%d")
+        s2021_str = st.text_input("2021 ", value="", placeholder="örn. 1.250.000", key="s2021_str")
+        s2022_str = st.text_input("2022 ", value="", placeholder="örn. 1.600.000", key="s2022_str")
+        s2023_str = st.text_input("2023 ", value="", placeholder="örn. 2.100.000", key="s2023_str")
+        s2024_str = st.text_input("2024 ", value="", placeholder="örn. 2.800.000", key="s2024_str")
 
     submitted = st.form_submit_button("Sorgula")
 
 if submitted:
+   if submitted:
+    p2021 = parse_int(p2021_str)
+    p2022 = parse_int(p2022_str)
+    p2023 = parse_int(p2023_str)
+    p2024 = parse_int(p2024_str)
+
+    s2021 = parse_int(s2021_str)
+    s2022 = parse_int(s2022_str)
+    s2023 = parse_int(s2023_str)
+    s2024 = parse_int(s2024_str)
+
+    vals = [p2021, p2022, p2023, p2024, s2021, s2022, s2023, s2024]
+    if any(v is None for v in vals):
+        st.error("Lütfen tüm alanlara yalnızca **tam sayı** girin (örn. 1.234.567).")
+    else:
+        prim_vals = [p2021, p2022, p2023, p2024]
+        satis_vals_nom = [s2021, s2022, s2023, s2024]
+        # → deflatör & CAGR hesapları burada devam edecek
+   
     prim_vals = [p2021, p2022, p2023, p2024]
     satis_vals_nom = [s2021, s2022, s2023, s2024]
 
