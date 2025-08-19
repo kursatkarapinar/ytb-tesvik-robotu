@@ -1,223 +1,15 @@
-İçeriğe geç
-Sohbet geçmişi
+import streamlit as st
+import pandas as pd
+import fnmatch
+from il_ilce_data import df_il_ilce
+from Hangibolge import df_il_bolge
+from OncelikliYatirim import oncelikli_yatirim_secim_listesi
+from HedefYatirim import df_hedef_yatirim
+from NACE import df_nace
 
-Şunu dedin:
-app2.py
-Python
-bu mevcut yazılımın anlık hali
-ChatGPT:
-Şu anda paylaştığınız app2.py dosyasının anlık hali şu şekilde çalışıyor:
-
-Başlık: "Yeni YTB Teşvik Robotu" (sayfanın ortasında gösteriliyor).
-
-Arama Alanı: Kullanıcı NACE kodunu veya konu adını yazıyor → eşleşen kodlar listeleniyor → seçilen kod doğrulanıyor.
-
-İl / İlçe Seçimi:
-
-İl ve ilçe seçiliyor.
-
-OSB/Endüstri bölgesi olup olmadığı soruluyor.
-
-Yatırımın öncelikli yatırım listesinde olup olmadığı seçiliyor.
-
-Sorgula Butonu: Tüm seçimler tamamlandıktan sonra çalışıyor. Eksik giriş varsa hata veriyor.
-
-Sonuçlar Bölümü:
-
-Seçilen NACE kodu ve tanımı, il/ilçe bilgisi, bölge numarası.
-
-Yararlanılacak bölge (ilçe, OSB ve öncelik durumuna göre hesaplanıyor).
-
-Öncelikli/Hedef yatırım bilgisi ve varsa özel şartlar.
-
-Teşvik destekleri:
-
-KDV İstisnası, Gümrük Vergisi Muafiyeti, Yatırım Yeri Tahsisi
-
-SGK İşveren ve İşçi Hissesi Destekleri
-
-Vergi İndirimi (öncelikli/ hedef yatırım durumuna göre farklı oranlar)
-
-Faiz Desteği (ayrıntılı üst sınır bilgisiyle)
-
-Makine Desteği (her zaman “Yok”)
-
-Asgari Yatırım Tutarı (bölgeye göre 12 veya 6 Milyon TL)
-
-Ekosistem Geliştirme Planı notu
-
-Alt kısımda uyarı ve mevzuat linki veriliyor.
-
-Yani mevcut yazılım, NACE kodu + İl/ilçe + OSB + Öncelikli yatırım bilgilerini alıp, bölge ve teşvik hesaplamalarını yaparak tablo halinde sonuçları sunuyor.
-
-İstersen sana bu mevcut hali üzerinden bir akış diyagramı ya da özet tablo çıkarabilirim. İster misin?
-
-Şunu dedin:
-buna ilaveler eklemem gerekiyor
-ChatGPT:
-
-18s boyunca düşündüm
-
-Analiz duraklatıldı
-Şunu dedin:
-şimdi bu konu yatırım teşvik konusu, bundan bağımsız olarak başka bir hesaplama koymak istiyorum. Ekranın sol tarafında bu olsun, sağ tarafta diğer hesaplama olacak.
-
-Buradaki hesaplamada Firmanın 2021, 2022,2023 ve 2024 için SGK Prim Gün Sayısı ve Net Satış Hasılatı (TL) olarak kullanıcıdan istenecek. Sorgula dedikten sonra Ortalama Büyüme (Prim gün sayısı) ve Ortalama Büyüme (Net Satış Hasılatı) hesaplanacak. 
-Bunlar %10dan büyükse yeşil, küçükse kırmızı olacak.
- 
-ChatGPT:
-
-10s boyunca düşündüm
-Harika—istediğin yan paneli ekledim ve iki sütunlu yeni uygulamayı tek dosyada hazırladım. Solda mevcut Yatırım Teşvik akışın, sağda ise Ortalama Büyüme Hesaplama (2021→2024) yer alıyor. Sağ panel:
-
-Kullanıcıdan 2021–2024 için SGK Prim Gün Sayısı ve Net Satış Hasılatı (TL) alır.
-
-CAGR (yıllık bileşik büyüme) hesaplar: (2024 / 2021)^(1/3) − 1.
-
-Sonuçlar >%10 yeşil, aksi kırmızı renkle gösterilir.
-
-Girilen verileri küçük bir tabloyla da görüntüler.
-
-Hazır dosya burada: app2_dual.py’i indir
-
-İstersen büyüme metodunu “ortalama yıllık (aritmetik)” yapacak bir seçenek de ekleyebilirim veya renk eşiğini %15 gibi farklı bir değere ayarlayabilirim. 
-
-Şunu dedin:
-Yıllık büyümeyi net satış hasılatı için hesaplarken deflatör uygulanacak. Deflatör sabiti 2021 için 0,18852, 2022 için 0,36950. 2023 için 0,6215, 2024 için 1 olacak ve kullanıcının girdiği rakamlar bu değerlere bölünenerek hesaplanıp sonra büyüme bu rakamlar üzerindne hesaplanacak
-ChatGPT:
-
-2m 1s boyunca düşündüm
-Süper, net satış hasılatı için deflatör uygulanmış büyüme hesabını sağ panele entegre ettim. Artık kullanıcı 2021–2024 nominal değerlerini giriyor; uygulama önce şu sabitlerle reel değerlere çeviriyor, sonra CAGR’ı bu reel değerler üzerinden hesaplıyor:
-
-2021 → 0,18852
-
-2022 → 0,36950
-
-2023 → 0,6215
-
-2024 → 1,00
-
-Üretilen dosya: app2_dual_deflated.py’i indir
-
-Ne eklendi?
-
-Net satış hasılatı için reel tablo (nominal ve deflatörlü değerleri yan yana görebilirsin).
-
-CAGR = (Reel_2024 / Reel_2021)^(1/3) − 1 ile hesaplanır.
-
-%10 eşiği: > %10 yeşil, aksi kırmızı.
-
-Açıklama kutusunda kullanılan formül ve deflatörler yazıyor.
-
-İstersen:
-
-Eşik değerini (%10) ayarlanabilir yapayım.
-
-CAGR yerine aritmetik ortalama yıllık artış seçeneği ekleyeyim.
-
-Deflatörleri bir input alanına taşıyıp gerektiğinde güncellenebilir hale getireyim.
-
-Şunu dedin:
-kanvasta kodu gösterir misin
-ChatGPT:
-App2 Dual Deflated
-· python
-            )
-        else:
-            faiz_desteği = "Yok"
-        st.write(f"**Faiz Desteği:** {faiz_desteği}")
-
-        # 5.11) Makine Desteği
-        st.write(f"**Makine Desteği:** Yok")
-
-        # 5.12) Asgari Yatırım Tutarı
-        asgari_yatirim = "12 Milyon TL" if bolge_no in [1, 2] else "6 Milyon TL"
-        st.write(f"**Asgari Yatırım Tutarı:** {asgari_yatirim}")
-
-        # 5.13) Ekosistem Geliştirme Planı
-        st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
-
-        # Uyarı & mevzuat
-        st.markdown("_⚠️ Bu içerik ön bilgilendirme amaçlıdır; bağlayıcı hükümlere ulaşmak için resmi mevzuat metinlerini inceleyiniz._")
-        st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
-
-# -------------------------
-# RIGHT: Büyüme Hesaplama
-# -------------------------
-with right:
-    st.title("Ortalama Büyüme Hesaplama (2021→2024)")
-    st.caption("SGK Prim Gün Sayısı ve Net Satış Hasılatı için **yıllık bileşik büyüme oranı (CAGR)** hesaplanır. >%10 yeşil, aksi kırmızı.")
-
-    with st.form("growth_form"):
-        st.subheader("Veri Girişi")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("**SGK Prim Gün Sayısı**")
-            p2021 = st.number_input("2021", min_value=0.0, step=1.0, key="p2021")
-            p2022 = st.number_input("2022", min_value=0.0, step=1.0, key="p2022")
-            p2023 = st.number_input("2023", min_value=0.0, step=1.0, key="p2023")
-            p2024 = st.number_input("2024", min_value=0.0, step=1.0, key="p2024")
-
-        with c2:
-            st.markdown("**Net Satış Hasılatı (TL)**")
-            s2021 = st.number_input("2021 ", min_value=0.0, step=1000.0, key="s2021", format="%.2f")
-            s2022 = st.number_input("2022 ", min_value=0.0, step=1000.0, key="s2022", format="%.2f")
-            s2023 = st.number_input("2023 ", min_value=0.0, step=1000.0, key="s2023", format="%.2f")
-            s2024 = st.number_input("2024 ", min_value=0.0, step=1000.0, key="s2024", format="%.2f")
-
-        submitted = st.form_submit_button("Sorgula")
-
-    if submitted:
-        # doğrulama
-        prim_vals = [p2021, p2022, p2023, p2024]
-        satis_vals_nom = [s2021, s2022, s2023, s2024]
-
-        if not (valid_positive_numbers(prim_vals) and valid_positive_numbers(satis_vals_nom)):
-            st.error("Lütfen tüm alanları 0 veya daha büyük sayılarla doldurun.")
-        else:
-            # Deflatör uygulanmış (reel) satışlar
-            satis_vals_reel = []
-            years = [2021, 2022, 2023, 2024]
-            for y, v in zip(years, satis_vals_nom):
-                d = DEFLATORS.get(y, 1.0)
-                try:
-                    satis_vals_reel.append(v / d if d and d > 0 else float("nan"))
-                except Exception:
-                    satis_vals_reel.append(float("nan"))
-
-            # CAGR (3 yıl aralık: 2021→2024)
-            prim_cagr = cagr(p2021, p2024, 3)
-            satis_cagr_reel = cagr(satis_vals_reel[0], satis_vals_reel[-1], 3)
-
-            st.subheader("Sonuçlar")
-            colA, colB = st.columns(2)
-            with colA:
-                st.markdown("**Ortalama Büyüme (Prim Gün Sayısı)**")
-                st.markdown(pct_style(prim_cagr), unsafe_allow_html=True)
-            with colB:
-                st.markdown("**Ortalama Büyüme (Net Satış Hasılatı — Reel)**")
-                st.markdown(pct_style(satis_cagr_reel), unsafe_allow_html=True)
-
-            # Bilgi amaçlı tablo (Nominal vs Reel)
-            df_show = pd.DataFrame({
-                "Yıl": years,
-                "Prim Gün": prim_vals,
-                "Net Satış (Nominal TL)": satis_vals_nom,
-                "Deflatör": [DEFLATORS[y] for y in years],
-Hazır! Kodu kanvasa yerleştirdim. Sağdaki editörde app2_dual_deflated.py dosyasını görebilirsin ve üzerinde oynayabilirsin.
-
-Şunu dedin:
-sadece ekstra eklenecekleri yazar mısın
-ChatGPT:
-
-14s boyunca düşündüm
-Tabii. Mevcut sol panel/Yatırım Teşvik akışına dokunmadan, sadece eklemeniz gereken parçalar aşağıdaki gibi. (Kopyala‑yapıştır için bölümlendirdim.)
-
-1) Yardımcılar (dosyanın üst kısımlarına, import’ların altına ekleyin)
-import pandas as pd  # varsa tekrar eklemeyin
 
 def cagr(v_start: float, v_end: float, years: int) -> float:
-    """Yıllık bileşik büyüme (CAGR)"""
+    """Yıllık bileşik büyüme oranı (CAGR)"""
     try:
         if v_start <= 0 or v_end <= 0 or years <= 0:
             return float("nan")
@@ -226,7 +18,6 @@ def cagr(v_start: float, v_end: float, years: int) -> float:
         return float("nan")
 
 def pct_style(value: float) -> str:
-    """>%10 yeşil, aksi kırmızı yazı döndürür (HTML)"""
     if pd.isna(value):
         return '<span style="color:#666">—</span>'
     color = "#069f3c" if value > 0.10 else "#c62828"
@@ -238,22 +29,229 @@ def valid_positive_numbers(vals):
     except Exception:
         return False
 
-# Net satış hasılatı için deflatör sabitleri
 DEFLATORS = {
     2021: 0.18852,
     2022: 0.36950,
     2023: 0.6215,
     2024: 1.0,
 }
-2) İki sütun düzeni (sol mevcut kod, sağ yeni hesaplama)
-Mevcut içeriğiniz sol sütunda kalsın. Eğer hâlâ tek sütundaysa, en üste şunu ekleyip sol içeriği with left: bloğuna alın:
 
 left, right = st.columns([1, 1], gap="large")
 
 with left:
-    # ← mevcut Yatırım Teşvik akışınız buraya
-    ...
-3) SAĞ panel: “Ortalama Büyüme Hesaplama” (dosyanın sonuna ekleyin)
+
+# Başlığı tam ortalamak için üç sütun
+col1, col2, col3 = st.columns([1, 5, 1])
+with col2:
+    st.title("Yeni YTB Teşvik Robotu")
+
+
+# 0) Tüm kod–tanım çiftlerini hazırla
+faaliyet_options = [
+    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+    for _, row in df_nace.iterrows()
+]
+
+# 1) Arama terimini tek satırda al
+search_term = st.text_input(
+    "Nace Kodunu veya Konuyu Arayın…",
+    placeholder="Örn. kalem, 25.61.07 …"
+).strip()
+
+# 2) Aramaya göre filtrele (substring bazlı)
+if search_term:
+    filtered = [
+        opt for opt in faaliyet_options
+        if search_term.lower() in opt.lower()
+    ]
+else:
+    # search_term boşken tüm listeyi göstermek yerine hiçbir şey göstermeyebilirsiniz:
+    filtered = []
+
+# 3) Eğer eşleşme varsa selectbox’u göster, yoksa uyarı ver
+if filtered:
+    # Başına isterseniz boş bir değer ekleyebilirsiniz:
+    selection = st.selectbox(
+        "Eşleşen NACE Kodları:",
+        [""] + filtered,
+        index=0
+    )
+    nace_kodu = selection.split(" - ")[0] if selection else ""
+    if nace_kodu:
+        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+else:
+    if search_term:
+        st.warning("Eşleşen NACE kodu bulunamadı!")
+    # hiçbir şey seçilmedi
+    nace_kodu = ""
+
+# 1) İl Seçimi
+iller = sorted(df_il_ilce["İl"].unique())
+iller_options = [""] + iller
+secili_il = st.selectbox("İl Seçin*", iller_options, index=0)
+
+# 2) İlçe Seçimi
+ilceler = sorted(df_il_ilce[df_il_ilce["İl"] == secili_il]["İlçe"].unique())
+ilceler_options = [""] + ilceler
+secili_ilce = st.selectbox("İlçe Seçin*", ilceler_options, index=0)
+
+# 3) OSB veya Endüstri Bölgesi Sorgusu
+bolge_secim = st.radio(
+    "OSB veya Endüstri Bölgesi mi?*",
+    ("Seçiniz...", "Evet", "Hayır"),
+    index=0
+)
+# 4) Öncelikli Yatırım Sorgusu
+oncelikli_options = [""] + oncelikli_yatirim_secim_listesi
+secim_oncelikli = st.selectbox(
+    "Listedeki Öncelikli Yatırımlardan mı?*",
+    oncelikli_options,
+    index=0
+)
+
+col1, col2 = st.columns([3, 1])
+
+with col2:
+    # 1) BİRLEŞİK YAZDIRARAK SATIR BOŞLUĞUNU KALDIRMA
+    # st.write tek çağrıda “  \n” (iki boşluk + newline) ile satır sonu verir
+    st.write("**Kürşat Karapınar**  \n")
+
+# 5) Sorgula
+
+if st.button("Sorgula"):
+    # 5.0) Genel alan doldurma kontrolü
+    if not secili_il or not secili_ilce or bolge_secim == "Seçiniz..." or secim_oncelikli == "":
+        st.error("❌ Lütfen Tüm Alanları (*) Eksiksiz Doldurun!")
+        st.stop()
+    # 5.1) Geçerlilik kontrolü
+    # Geçerlilik kontrolü
+    if nace_kodu not in df_nace["NACE REV. 2.1 KODU"].values:
+        st.error("❌ Hatalı NACE Kodu girdiniz!")
+        st.stop()
+
+
+    # 5.1) Yatırımın Adı
+    yatirim_adi = df_nace.loc[
+        df_nace["NACE REV. 2.1 KODU"] == nace_kodu,
+        "NACE REV.2.1 TANIM"
+    ].squeeze()
+    # … geriye kalan tüm kodlar aynı şekilde devam eder …
+
+
+    # 5.2) İlin Bulunduğu Bölge
+    bolge_no = df_il_bolge.loc[
+        df_il_bolge["İl"] == secili_il,
+        "Kaçıncı Bölge"
+    ].iloc[0]
+    bolge_yazi = f"{bolge_no}. Bölge"
+
+    # Yararlanılacak Bölge hesapla (önceki mantık)
+    yararlanilan_bolge = bolge_no
+    if secili_ilce and secili_ilce not in ["Diğer İlçeler", "Tüm İlçeler"]:
+        yararlanilan_bolge += 1
+    if bolge_secim == "Evet":
+        yararlanilan_bolge += 1
+    yararlanilan_bolge = min(yararlanilan_bolge, 6)
+    yararlanilacak_bolge_yazi = f"{yararlanilan_bolge}. Bölge"
+
+
+        # Öncelikli/Hedef Yatırım
+    oncelikli_flag = "Hayır" if secim_oncelikli in ["Seçiniz...", "Hayır."] else "Evet"
+    matches = df_hedef_yatirim[
+        df_hedef_yatirim["NACE KODU"].astype(str)
+        .apply(lambda pat: fnmatch.fnmatch(nace_kodu, pat))
+    ]
+    if not matches.empty:
+        hedef_flag = "Evet"
+        ozel_sart = matches["Özel Şartlar"].iloc[0]
+    else:
+        hedef_flag = "Hayır"
+        ozel_sart = "Hedef Yatırım Değildir"
+
+    # Eğer hem Öncelikli hem Hedef yatırım hayırsa uyar ve durdur
+    if oncelikli_flag == "Hayır" and hedef_flag == "Hayır":
+        st.error("Seçtiğiniz NACE Kodu Yatırım Teşvik Belgesi kapsamında desteklenmemektedir.")
+        st.stop()
+
+    # Sonuç özeti
+
+    
+
+    # 5.5) Seçim Özeti
+    st.subheader("Sonuçlar")
+    st.write(f"**NACE Kodu:** {nace_kodu}")
+    st.write(f"**Yatırımın Adı:** {yatirim_adi}")
+    st.write(f"**İl:** {secili_il}")
+    st.write(f"**İlçe:** {secili_ilce}")
+    st.write(f"**İlin Olduğu Bölge:** {bolge_yazi}")
+    # SGK Hissesi Yararlanılacak Bölge (yeni konum)
+    st.write(f"**SGK Hissesi Yararlanılacak Bölge:** {yararlanilacak_bolge_yazi}")
+    st.write(f"**OSB/Endüstri Bölgesi:** {bolge_secim}")
+    st.write(f"**Öncelikli Yatırım mı?** {oncelikli_flag}")
+    st.write(f"**Hedef Yatırım mı?** {hedef_flag}")
+    st.write(f"**Yatırımla İlgili Özel Şartlar:** {ozel_sart}")
+
+    # 5.6) KDV, Gümrük ve Yer Tahsisi
+    kdv = gumruk = yer_tahsisi = "Yok" if (oncelikli_flag == "Hayır" and hedef_flag == "Hayır") else "Var"
+    st.write(f"**KDV İstisnası:** {kdv}")
+    st.write(f"**Gümrük Vergisi Muafiyeti:** {gumruk}")
+    st.write(f"**Yatırım Yeri Tahsisi:** {yer_tahsisi}")
+
+    # 5.7) SGK İşveren Hissesi Desteği
+    sgk_map = {1: "-", 2: "1 Yıl", 3: "2 Yıl", 4: "4 Yıl", 5: "8 Yıl", 6: "12 Yıl"}
+    sgk_hibe = sgk_map.get(yararlanilan_bolge, "-")
+    st.write(f"**SGK İşveren Hissesi Desteği:** {sgk_hibe}")
+
+    # 5.8) SGK İşçi Hissesi Desteği
+    sgk_isci = "10 Yıl" if yararlanilan_bolge == 6 else "Yok"
+    st.write(f"**SGK İşçi Hissesi Desteği:** {sgk_isci}")
+
+    # 5.9) Vergi İndirimi
+    if oncelikli_flag == "Evet":
+        tax_display = "%60, YKO %30"
+    elif oncelikli_flag == "Hayır" and hedef_flag == "Evet":
+        tax_display = "Yok" if secili_il == "İstanbul" else "%60, YKO %20"
+    else:
+        tax_display = "Yok"
+    st.write(f"**Vergi İndirimi:** {tax_display}")
+
+    # 5.10) Faiz Desteği
+    if oncelikli_flag == "Evet":
+        faiz_desteği = (
+            "Var. Faiz oranı TCMB bir hafta vadeli REPO faiz oranının %25 ile 12,5 puandan küçük olanı geçemez. "
+            "Faiz tutarı sabit yatırım tutarının %10'u ile 24 Milyon TL'den küçük olanı geçemez."
+        )
+    elif oncelikli_flag == "Hayır" and hedef_flag == "Evet":
+        faiz_desteği = (
+            "Var. Faiz oranı TCMB bir hafta vadeli REPO faiz oranının %25 ile 12,5 puandan küçük olanı geçemez. "
+            "Faiz tutarı sabit yatırım tutarının %10'u ile 12 Milyon TL'den küçük olanı geçemez."
+        )
+    else:
+        faiz_desteği = "Yok"
+    st.write(f"**Faiz Desteği:** {faiz_desteği}")
+
+    # 5.11) Makine Desteği
+    st.write(f"**Makine Desteği:** Yok")
+
+    # 5.12) Asgari Yatırım Tutarı
+    asgari_yatirim = "12 Milyon TL" if bolge_no in [1, 2] else "6 Milyon TL"
+    st.write(f"**Asgari Yatırım Tutarı:** {asgari_yatirim}")
+
+    # 5.13) Ekosistem Geliştirme Planı
+    st.write("**Ekosistem Geliştirme Planı:** Büyük İşletme veya Yerel Kalkınma Hamlesi ise Evet.")
+
+
+
+    # Uyarı
+    st.markdown("_⚠️ Bu içerik ön bilgilendirme amaçlıdır; bağlayıcı hükümlere ulaşmak için resmi mevzuat metinlerini inceleyiniz._")
+
+    # İlgili mevzuat metni
+    st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
+
+
+
+import streamlit as st
+
 with right:
     st.title("Ortalama Büyüme Hesaplama (2021→2024)")
     st.caption("SGK Prim Gün Sayısı ve Net Satış Hasılatı için CAGR hesaplanır. >%10 yeşil, aksi kırmızı.")
@@ -285,14 +283,10 @@ with right:
         if not (valid_positive_numbers(prim_vals) and valid_positive_numbers(satis_vals_nom)):
             st.error("Lütfen tüm alanları 0 veya daha büyük sayılarla doldurun.")
         else:
-            # Nominal → Reel (deflatörle düzeltilmiş)
+            # Deflatör uygulanmış (reel) satışlar
             years = [2021, 2022, 2023, 2024]
-            satis_vals_reel = []
-            for y, v in zip(years, satis_vals_nom):
-                d = DEFLATORS.get(y, 1.0)
-                satis_vals_reel.append(v / d if d and d > 0 else float("nan"))
+            satis_vals_reel = [v / DEFLATORS[y] for y, v in zip(years, satis_vals_nom)]
 
-            # CAGR (2021→2024 = 3 yıl)
             prim_cagr = cagr(p2021, p2024, 3)
             satis_cagr_reel = cagr(satis_vals_reel[0], satis_vals_reel[-1], 3)
 
@@ -305,7 +299,6 @@ with right:
                 st.markdown("**Ortalama Büyüme (Net Satış Hasılatı — Reel)**")
                 st.markdown(pct_style(satis_cagr_reel), unsafe_allow_html=True)
 
-            # Bilgi tablosu (Nominal vs Reel)
             df_show = pd.DataFrame({
                 "Yıl": years,
                 "Prim Gün": prim_vals,
@@ -320,14 +313,3 @@ with right:
                 "Ortalama büyüme **CAGR**: (Reel_2024 / Reel_2021)^(1/3) - 1. "
                 "Eşik: > %10 yeşil, aksi kırmızı."
             )
-Notlar
-
-Eşik değerini değiştirmek isterseniz pct_style içindeki 0.10 değerini güncellemeniz yeterli.
-
-Deflatörler sabit sözlükte (DEFLATORS) tanımlı; ihtiyaç olursa kullanıcı girişine de açabiliriz.
-
-
-
-
-Dosya seçilmediDosya seçilmedi
-ChatGPT hata yapabilir. Önemli bilgileri kontrol edin.
