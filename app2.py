@@ -6,7 +6,7 @@ from Hangibolge import df_il_bolge
 from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
-left, right = st.columns([2, 1], gap="large")
+
 
 def cagr(v_start: float, v_end: float, years: int) -> float:
     """Yıllık bileşik büyüme oranı (CAGR)"""
@@ -38,7 +38,7 @@ DEFLATORS = {
 
 left, right = st.columns([1, 1], gap="large")
 
-with left:
+
 
 # Başlığı tam ortalamak için üç sütun
     col1, col2, col3 = st.columns([1, 5, 1])
@@ -252,9 +252,9 @@ with left:
 
 import streamlit as st
 
-with right:
+
     st.title("KOSGEB ")
-    st.caption("Kapasite Geliştirme - KÜresel Rekabetçilik için büyüme rakamları hesaplama")
+    st.caption("Kapasite Geliştirme - Küresel Rekabetçilik için büyüme rakamları hesaplama")
 
     with st.form("growth_form"):
         st.subheader("Veri Girişi")
