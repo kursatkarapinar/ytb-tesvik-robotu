@@ -316,7 +316,5 @@ if submitted:
         st.dataframe(df_show, hide_index=True, use_container_width=True)
 
         st.info(
-            "Net satış reel hesaplanır: **Reel = Nominal / Deflatör**. "
-            "Ortalama büyüme **CAGR**: (Reel_2024 / Reel_2021)^(1/3) - 1. "
-            "Eşik: > %10 yeşil, aksi kırmızı."
+            ""
         )
