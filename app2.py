@@ -218,6 +218,36 @@ if st.button("Sorgula"):
     # İlgili mevzuat metni
     st.markdown("[İlgili mevzuat metni](https://sanayi.gov.tr/mevzuat/diger/mc0403018201)")
 
+def cagr(v_start: float, v_end: float, years: int) -> float:
+    """Yıllık bileşik büyüme (CAGR)"""
+    try:
+        if v_start <= 0 or v_end <= 0 or years <= 0:
+            return float("nan")
+        return (v_end / v_start) ** (1.0 / years) - 1.0
+    except Exception:
+        return float("nan")
+
+def pct_style(value: float) -> str:
+    """>%10 yeşil, aksi kırmızı yazı döndürür (HTML)"""
+    if pd.isna(value):
+        return '<span style="color:#666">—</span>'
+    color = "#069f3c" if value > 0.10 else "#c62828"
+    return f'<span style="color:{color}; font-weight:700">{value*100:.2f}%</span>'
+
+def valid_positive_numbers(vals):
+    try:
+        return all(float(v) >= 0 for v in vals)
+    except Exception:
+        return False
+
+# Net satış hasılatı için deflatör sabitleri
+DEFLATORS = {
+    2021: 0.18852,
+    2022: 0.36950,
+    2023: 0.6215,
+    2024: 1.0,
+}
+
 import streamlit as st
 
 
