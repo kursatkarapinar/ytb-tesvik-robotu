@@ -7,6 +7,10 @@ from OncelikliYatirim import oncelikli_yatirim_secim_listesi
 from HedefYatirim import df_hedef_yatirim
 from NACE import df_nace
 
+st.set_page_config(
+    page_title="YTB Teşvik Robotu & KOSGEB Hesaplama",
+    page_icon="favicon.ico"
+)
 
 def parse_int(s: str) -> int | None:
     """'1.234.567' veya '1234567' → 1234567; boş ya da hatalıysa None döner"""
