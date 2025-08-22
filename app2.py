@@ -61,7 +61,7 @@ faaliyet_options = [
 
 # 1) Arama terimini tek satırda al
 search_term = st.text_input(
-    "Nace Kodunu veya Konuyu Arayın…",
+    "Nace Kodunu (xx.xx.xx formatıyla) veya Konuyu Arayın…",
     placeholder="Örn. kalem, 25.61.07 …"
 ).strip()
 
@@ -259,6 +259,16 @@ if st.button("Sorgula"):
 
 import streamlit as st
 
+def parse_int(value):
+    """Boşsa 0 döndür, doluysa integer çevir."""
+    if value is None or value.strip() == "":
+        return 0
+    try:
+        # Nokta veya virgül ayırıcıyı temizle
+        return int(value.replace(".", "").replace(",", ""))
+    except ValueError:
+        return None
+
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
     st.title("KOSGEB")
@@ -271,17 +281,17 @@ with st.form("growth_form"):
 
     with c1:
         st.markdown("**SGK Prim Gün Sayısı**")
-        p2021_str = st.text_input("2021", value="0", placeholder="örn. 12.000", key="p2021_str")
-        p2022_str = st.text_input("2022", value="0", placeholder="örn. 13.000", key="p2022_str")
-        p2023_str = st.text_input("2023", value="0", placeholder="örn. 14.000", key="p2023_str")
-        p2024_str = st.text_input("2024", value="0", placeholder="örn. 15.000", key="p2024_str")
+        p2021_str = st.text_input("2021", value="", placeholder="örn. 12.000", key="p2021_str")
+        p2022_str = st.text_input("2022", value="", placeholder="örn. 13.000", key="p2022_str")
+        p2023_str = st.text_input("2023", value="", placeholder="örn. 14.000", key="p2023_str")
+        p2024_str = st.text_input("2024", value="", placeholder="örn. 15.000", key="p2024_str")
 
     with c2:
         st.markdown("**Net Satış Hasılatı (TL)**")
-        s2021_str = st.text_input("2021 ", value="0", placeholder="örn. 1.250.000", key="s2021_str")
-        s2022_str = st.text_input("2022 ", value="0", placeholder="örn. 1.600.000", key="s2022_str")
-        s2023_str = st.text_input("2023 ", value="0", placeholder="örn. 2.100.000", key="s2023_str")
-        s2024_str = st.text_input("2024 ", value="0", placeholder="örn. 2.800.000", key="s2024_str")
+        s2021_str = st.text_input("2021 ", value="", placeholder="örn. 1.250.000", key="s2021_str")
+        s2022_str = st.text_input("2022 ", value="", placeholder="örn. 1.600.000", key="s2022_str")
+        s2023_str = st.text_input("2023 ", value="", placeholder="örn. 2.100.000", key="s2023_str")
+        s2024_str = st.text_input("2024 ", value="", placeholder="örn. 2.800.000", key="s2024_str")
 
     submitted = st.form_submit_button("Sorgula")
 
