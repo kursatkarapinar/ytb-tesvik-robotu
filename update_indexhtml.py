@@ -155,7 +155,7 @@ def update_social_preview_image(og_image: str, og_description: str, og_url: str)
     index_path.write_text(str(soup), encoding="utf-8")
 
 if __name__ == "__main__":
-    base_url = os.getenv("PUBLIC_BASE_URL", "http://localhost:8501")
+    base_url = os.getenv("PUBLIC_BASE_URL", "https://tesvikrobotu.net/")
     inject_ga()
     update_title(APP_TITLE)
     update_favicon(FAVICON_FILE)
