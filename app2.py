@@ -78,14 +78,35 @@ else:
 # 3) Eğer eşleşme varsa selectbox’u göster, yoksa uyarı ver
 if filtered:
     # Başına isterseniz boş bir değer ekleyebilirsiniz:
-    selection = st.selectbox(
-        "Eşleşen NACE Kodları:",
-        [""] + filtered,
-        index=0
-    )
-    nace_kodu = selection.split(" - ")[0] if selection else ""
-    if nace_kodu:
-        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
+     # Çok satır desteği için kod–tanımı alt alta gösterecek şekilde düzenle
++    display_options = [
++        opt.replace(" - ", " \n ") for opt in filtered
++    ]
++
++    selection = st.selectbox(
++        "Eşleşen NACE Kodları:",
++        [""] + display_options,
++        index=0
++    )
++
++    # CSS ile newline görünür hale gelsin
++    st.markdown(
++        """
++        <style>
++        div[data-baseweb="select"] span {
++            white-space: pre-line !important;
++        }
++        </style>
++        """,
++        unsafe_allow_html=True
++    )
++
++    # Kod seçimini yakala
++    if selection:
++        nace_kodu = selection.split()[0]  # ilk parça kod oluyor
++        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
++    else:
++        nace_kodu = ""
 else:
     if search_term:
         st.warning("Eşleşen NACE kodu bulunamadı!")
