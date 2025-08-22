@@ -53,62 +53,67 @@ with col2:
     st.title("Yeni YTB Teşvik Robotu")
 
 
-# 0) Tüm kod–tanım çiftlerini hazırla 
-faaliyet_options = [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+# --- (NACE Arama & Seçim) Uzun tanımlar kesilmeden görünsün ---
+
+# 1) Uzun metinlerin kısaltılmasını kapat (yalnızca bu selectbox alanını etkileyecek genel CSS)
+st.markdown("""
+<style>
+/* Dropdown içindeki açılır liste seçenekleri */
+div[role="listbox"] div[role="option"] span {
+    white-space: normal !important;   /* satır sarma */
+    overflow: visible !important;
+    text-overflow: unset !important;
+    word-break: break-word !important;
+    line-height: 1.4 !important;
+}
+/* Kapalıyken seçilen değer alanı (selectbox üstünde görünen) */
+div[data-baseweb="select"] span {
+    white-space: normal !important;   /* satır sarma */
+    overflow: visible !important;
+    text-overflow: unset !important;
+    word-break: break-word !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 2) NACE verisini kod + tanım olarak hazırla
+# df_nace: NACE tablo DataFrame'in, şu iki kolonu içermeli:
+#   "NACE REV. 2.1 KODU"   ve   "NACE REV.2.1 TANIM"
+records = [
+    {"code": row["NACE REV. 2.1 KODU"], "desc": row["NACE REV.2.1 TANIM"]}
     for _, row in df_nace.iterrows()
 ]
 
-# 1) Arama terimini tek satırda al
+# 3) Arama kutusu
 search_term = st.text_input(
     "Nace Kodunu (xx.xx.xx formatıyla) veya Konuyu Arayın…",
     placeholder="Örn. kalem, 25.61.07 …"
 ).strip()
 
-# 2) Aramaya göre filtrele (substring bazlı)
-if search_term:
-    filtered = [
-        opt for opt in faaliyet_options
-        if search_term.lower() in opt.lower()
-    ]
-else:
-    filtered = []
+# 4) Filtreleme (kod veya açıklama içinde geçenleri getir)
+filtered = [
+    r for r in records
+    if not search_term
+       or (search_term.lower() in r["code"].lower()
+           or search_term.lower() in r["desc"].lower())
+]
 
-# 3) Eğer eşleşme varsa selectbox’u göster, yoksa uyarı ver
+# 5) Seçim (eşleşme varsa göster)
 if filtered:
-    # Çok satır desteği için kod–tanımı alt alta gösterecek şekilde düzenle
-    display_options = [
-        opt.replace(" - ", " \n ") for opt in filtered
-    ]
-
     selection = st.selectbox(
         "Eşleşen NACE Kodları:",
-        [""] + display_options,
-        index=0
+        [""] + filtered,                  # başa boş seçenek
+        index=0,
+        format_func=lambda r: "" if r == "" else f"{r['code']} - {r['desc']}"  # TEK SATIR ama TAMAMI görünsün
     )
-
-    # CSS ile newline görünür hale gelsin
-    st.markdown(
-        """
-        <style>
-        div[data-baseweb="select"] span {
-            white-space: pre-line !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Kod seçimini yakala
-    if selection:
-        nace_kodu = selection.split()[0]  # ilk parça kod oluyor
+    nace_kodu = selection["code"] if selection and selection != "" else ""
+    if nace_kodu:
         st.success(f"Seçilen NACE Kodu: {nace_kodu}")
-    else:
-        nace_kodu = ""
 else:
     if search_term:
         st.warning("Eşleşen NACE kodu bulunamadı!")
     nace_kodu = ""
+
 
 
 # 1) İl Seçimi
