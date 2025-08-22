@@ -55,63 +55,66 @@ with col2:
 
 # 0) Tüm kod–tanım çiftlerini hazırla
 faaliyet_options = [
-    f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
-    for _, row in df_nace.iterrows()
+f"{row['NACE REV. 2.1 KODU']} - {row['NACE REV.2.1 TANIM']}"
+for _, row in df_nace.iterrows()
 ]
+
 
 # 1) Arama terimini tek satırda al
 search_term = st.text_input(
-    "Nace Kodunu (xx.xx.xx formatıyla) veya Konuyu Arayın…",
-    placeholder="Örn. kalem, 25.61.07 …"
+"Nace Kodunu (xx.xx.xx formatıyla) veya Konuyu Arayın…",
+placeholder="Örn. kalem, 25.61.07 …"
 ).strip()
+
 
 # 2) Aramaya göre filtrele (substring bazlı)
 if search_term:
-    filtered = [
-        opt for opt in faaliyet_options
-        if search_term.lower() in opt.lower()
-    ]
+filtered = [
+opt for opt in faaliyet_options
+if search_term.lower() in opt.lower()
+]
 else:
-    # search_term boşken tüm listeyi göstermek yerine hiçbir şey göstermeyebilirsiniz:
-    filtered = []
+filtered = []
+
 
 # 3) Eğer eşleşme varsa selectbox’u göster, yoksa uyarı ver
 if filtered:
-    # Başına isterseniz boş bir değer ekleyebilirsiniz:
-     # Çok satır desteği için kod–tanımı alt alta gösterecek şekilde düzenle
-+    display_options = [
-+        opt.replace(" - ", " \n ") for opt in filtered
-+    ]
-+
-+    selection = st.selectbox(
-+        "Eşleşen NACE Kodları:",
-+        [""] + display_options,
-+        index=0
-+    )
-+
-+    # CSS ile newline görünür hale gelsin
-+    st.markdown(
-+        """
-+        <style>
-+        div[data-baseweb="select"] span {
-+            white-space: pre-line !important;
-+        }
-+        </style>
-+        """,
-+        unsafe_allow_html=True
-+    )
-+
-+    # Kod seçimini yakala
-+    if selection:
-+        nace_kodu = selection.split()[0]  # ilk parça kod oluyor
-+        st.success(f"Seçilen NACE Kodu: {nace_kodu}")
-+    else:
-+        nace_kodu = ""
+# Çok satır desteği için kod–tanımı alt alta gösterecek şekilde düzenle
+display_options = [
+opt.replace(" - ", " \n ") for opt in filtered
+]
+
+
+selection = st.selectbox(
+"Eşleşen NACE Kodları:",
+[""] + display_options,
+index=0
+)
+
+
+# CSS ile newline görünür hale gelsin
+st.markdown(
+"""
+<style>
+div[data-baseweb="select"] span {
+white-space: pre-line !important;
+}
+</style>
+""",
+unsafe_allow_html=True
+)
+
+
+# Kod seçimini yakala
+if selection:
+nace_kodu = selection.split()[0] # ilk parça kod oluyor
+st.success(f"Seçilen NACE Kodu: {nace_kodu}")
 else:
-    if search_term:
-        st.warning("Eşleşen NACE kodu bulunamadı!")
-    # hiçbir şey seçilmedi
-    nace_kodu = ""
+nace_kodu = ""
+else:
+if search_term:
+st.warning("Eşleşen NACE kodu bulunamadı!")
+nace_kodu = ""
 
 # 1) İl Seçimi
 iller = sorted(df_il_ilce["İl"].unique())
