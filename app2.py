@@ -264,7 +264,7 @@ if st.button("Sorgula"):
     st.write(f"**Makine Desteği:** Yok")
 
     # 5.12) Asgari Yatırım Tutarı
-    asgari_yatirim = "12 Milyon TL" if bolge_no in [1, 2] else "6 Milyon TL"
+    asgari_yatirim = "15.1 Milyon TL" if bolge_no in [1, 2] else "7.5 Milyon TL"
     st.write(f"**Asgari Yatırım Tutarı:** {asgari_yatirim}")
 
     # 5.13) Ekosistem Geliştirme Planı
